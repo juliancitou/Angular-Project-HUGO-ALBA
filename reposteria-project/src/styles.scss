@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+/* Variables globales para la repostería */
+:root {
+  --primary-color: #ff6b8b;
+  --secondary-color: #ffd166;
+  --accent-color: #06d6a0;
+  --dark-color: #3d348b;
+  --light-color: #f8f9fa;
+  --text-dark: #2d3047;
+  --text-light: #6c757d;
+}
+
+/* Estilos globales */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fffaf5;
+  color: var(--text-dark);
+}
+
+/* Clases utilitarias para la repostería */
+.pastel-bg {
+  background: linear-gradient(135deg, #ff6b8b 0%, #ffd166 100%);
+}
+
+.btn-pastel {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #e55a7a;
+    transform: translateY(-2px);
+  }
+}
+
+.card-product {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
