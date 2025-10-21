@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Product, ProductCategory } from '../../shared/models/product.model';
 
@@ -11,11 +10,11 @@ export class ProductService {
         {
             id: 1,
             name: 'Pastel de Chocolate Clásico',
-            description: 'Delicioso pastel de chocolate con crema de mantequilla',
+            description: 'Delicioso pastel de chocolate con crema de mantequilla y decorado con fresas frescas',
             price: 350,
             category: ProductCategory.CAKES,
-            images: ['assets/images/chocolate-cake.jpg'],
-            ingredients: ['Harina', 'Chocolate', 'Huevos', 'Mantequilla', 'Azúcar'],
+            images: ['https://via.placeholder.com/400x300/FF6B8B/FFFFFF?text=Pastel+Chocolate'],
+            ingredients: ['Harina', 'Chocolate', 'Huevos', 'Mantequilla', 'Azúcar', 'Fresas'],
             allergens: ['Gluten', 'Huevos', 'Lácteos'],
             stock: 5,
             isAvailable: true,
@@ -25,23 +24,34 @@ export class ProductService {
         {
             id: 2,
             name: 'Cupcakes de Vainilla',
-            description: 'Esponjosos cupcakes de vainilla con frosting de crema',
+            description: 'Esponjosos cupcakes de vainilla con frosting de crema y sprinkles coloridos',
             price: 25,
             category: ProductCategory.CUPCAKES,
-            images: ['assets/images/vanilla-cupcakes.jpg'],
-            ingredients: ['Harina', 'Vainilla', 'Huevos', 'Mantequilla', 'Azúcar'],
+            images: ['https://via.placeholder.com/400x300/FFD166/FFFFFF?text=Cupcakes+Vainilla'],
+            ingredients: ['Harina', 'Vainilla', 'Huevos', 'Mantequilla', 'Azúcar', 'Sprinkles'],
             allergens: ['Gluten', 'Huevos', 'Lácteos'],
             stock: 12,
             isAvailable: true,
             rating: 4.5,
             reviewCount: 18
+        },
+        {
+            id: 3,
+            name: 'Galletas de Mantequilla',
+            description: 'Crujientes galletas de mantequilla con chispas de chocolate',
+            price: 15,
+            category: ProductCategory.COOKIES,
+            images: ['https://via.placeholder.com/400x300/06D6A0/FFFFFF?text=Galletas+Mantequilla'],
+            ingredients: ['Harina', 'Mantequilla', 'Azúcar', 'Chispas de Chocolate', 'Vainilla'],
+            allergens: ['Gluten', 'Lácteos'],
+            stock: 20,
+            isAvailable: true,
+            rating: 4.7,
+            reviewCount: 32
         }
     ];
 
-    constructor(private http: HttpClient) { }
-
     getProducts(): Observable<Product[]> {
-        // Simulamos llamada HTTP - luego conectaremos con backend real
         return of(this.products);
     }
 
@@ -53,14 +63,5 @@ export class ProductService {
     getProductsByCategory(category: ProductCategory): Observable<Product[]> {
         const filteredProducts = this.products.filter(p => p.category === category);
         return of(filteredProducts);
-    }
-
-    updateProductStock(productId: number, newStock: number): Observable<boolean> {
-        const product = this.products.find(p => p.id === productId);
-        if (product) {
-            product.stock = newStock;
-            return of(true);
-        }
-        return of(false);
     }
 }

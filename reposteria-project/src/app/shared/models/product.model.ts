@@ -9,7 +9,6 @@ export interface Product {
     allergens: string[];
     stock: number;
     isAvailable: boolean;
-    customizationOptions?: CustomizationOption[];
     rating?: number;
     reviewCount?: number;
 }
@@ -26,5 +25,5 @@ export enum ProductCategory {
     CUPCAKES = 'Cupcakes',
     COOKIES = 'Galletas',
     DESSERTS = 'Postres',
-    SPECIALS = 'Especiales',
+    SPECIALS = 'Especiales'
 }

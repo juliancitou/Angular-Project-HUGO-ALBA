@@ -1,0 +1,50 @@
+<section class="hero-section pastel-bg text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="display-4 fw-bold">Dulces Momentos, Sabores Inolvidables</h1>
+                <p class="lead">Descubre nuestra selección de pasteles y postres artesanales elaborados con los mejores
+                    ingredientes.</p>
+                <button class="btn btn-light btn-lg" routerLink="/products">
+                    Ver Productos
+                </button>
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="hero-image-placeholder">
+                    <span style="font-size: 8rem;">🎂</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="categories-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Nuestras Categorías</h2>
+        <div class="row">
+            <div class="col-md-3 mb-4" *ngFor="let category of categories">
+                <div class="card card-product text-center h-100">
+                    <div class="card-body">
+                        <div class="category-icon mb-3" style="font-size: 3rem;">{{ category.icon }}</div>
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        <p class="card-text text-muted">{{ category.description }}</p>
+                        <button class="btn btn-pastel" routerLink="/products">
+                            Explorar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="featured-products py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Productos Destacados</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4" *ngFor="let product of featuredProducts">
+                <app-product-card [product]="product"></app-product-card>
+            </div>
+        </div>
+    </div>
+</section>
