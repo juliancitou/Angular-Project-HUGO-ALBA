@@ -13,9 +13,8 @@ export class HeaderComponent {
   brandName = 'Encanto';
 
   menuItems = [
-    { name: 'Inicio', path: '/' },
-    { name: 'Productos', path: '/productos' },
-    { name: 'Acerca de', path: '/acerca' },
-    { name: 'Contacto', path: '/contacto' }
+    { name: 'Inicio', path: '/', icon: 'bi bi-house' },
+    { name: 'Productos', path: '/productos', icon: 'bi bi-basket' },
+    { name: 'Acerca de', path: '/acerca', icon: 'bi bi-info-circle' },
   ];
 }

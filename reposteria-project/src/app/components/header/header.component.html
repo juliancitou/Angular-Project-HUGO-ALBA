@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <!-- Logo y Nombre -->
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <div class="brand-container">
                     <div class="logo-placeholder">
                         <img src="assets/logo-empresa-encanto.png" alt="Logo Encanto" class="logo-image">
@@ -19,27 +19,32 @@
             <!-- Menú principal -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item" *ngFor="let item of menuItems">
-                        <a class="nav-link" [href]="item.path">{{ item.name }}</a>
-                    </li>
+                    <!-- Las opciones principales ahora estarán en el dropdown -->
                 </ul>
 
-                <!-- Sección derecha - Login y Acerca de -->
+                <!-- Sección derecha - Menú desplegable e Iniciar Sesión -->
                 <div class="d-flex align-items-center header-actions">
-                    <button class="btn btn-outline-primary me-2" type="button">
+                    <!-- Menú desplegable -->
+                    <div class="dropdown me-3">
+                        <button class="btn btn-menu dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-list me-2"></i>
+                            Menú
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li *ngFor="let item of menuItems">
+                                <a class="dropdown-item" [href]="item.path">
+                                    <i [class]="item.icon" class="me-2"></i>
+                                    {{ item.name }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Botón Iniciar Sesión -->
+                    <button class="btn btn-outline-primary" type="button">
                         <i class="bi bi-person me-1"></i>
                         Iniciar Sesión
                     </button>
-                    <div class="dropdown">
-                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            Acerca de
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Nuestra Historia</a></li>
-                            <li><a class="dropdown-item" href="#">Misión y Visión</a></li>
-                            <li><a class="dropdown-item" href="#">Equipo</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
