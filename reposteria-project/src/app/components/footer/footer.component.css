@@ -1,0 +1,18 @@
+.custom-footer {
+    background: linear-gradient(135deg, #FFE4E6 0%, #F8C8DC 100%);
+    color: #5D5D5D;
+    padding: 2rem 0;
+    margin-top: auto;
+    border-top: 3px solid #FFB6C1;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.copyright {
+    margin: 0;
+    color: #666;
+    font-weight: 500;
+    font-size: 1rem;
+}

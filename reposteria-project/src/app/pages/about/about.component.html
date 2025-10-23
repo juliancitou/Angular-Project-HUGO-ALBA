@@ -1,0 +1,125 @@
+<div class="about-page">
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">Nuestra Historia</h1>
+                    <p class="hero-description">
+                        En <strong>Encanto</strong>, convertimos momentos especiales en recuerdos dulces e inolvidables.
+                        Desde 2015, nos dedicamos a crear pasteles y postres artesanales con los mejores ingredientes
+                        y mucho amor.
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image-placeholder">
+                        🎂✨
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Misión y Visión -->
+    <section class="mission-vision">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card mission-card">
+                        <div class="card-body">
+                            <h3 class="card-title">Nuestra Misión</h3>
+                            <p class="card-text">
+                                Endulzar la vida de nuestros clientes a través de creaciones reposteras únicas,
+                                utilizando ingredientes de la más alta calidad y técnicas artesanales que preservan
+                                el auténtico sabor de lo hecho a mano.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card vision-card">
+                        <div class="card-body">
+                            <h3 class="card-title">Nuestra Visión</h3>
+                            <p class="card-text">
+                                Ser la repostería de referencia en la región, reconocida por nuestra innovación,
+                                calidad excepcional y por crear experiencias memorables que conectan emociones
+                                a través del dulce sabor de la tradición y la vanguardia.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipo -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="section-title">Nuestro Equipo</h2>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4" *ngFor="let member of teamMembers">
+                    <div class="team-card">
+                        <div class="member-avatar">
+                            {{ member.name.charAt(0) }}
+                        </div>
+                        <h4 class="member-name">{{ member.name }}</h4>
+                        <p class="member-role">{{ member.role }}</p>
+                        <p class="member-description">{{ member.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto y Redes Sociales -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <h3 class="section-title">Contacto</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="bi bi-geo-alt"></i>
+                            <span>Av. Dulces 123, Ciudad</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="bi bi-telephone"></i>
+                            <span>+52 481 114 0821</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="bi bi-envelope"></i>
+                            <span>encanto.reposteria@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="bi bi-clock"></i>
+                            <span>Lun-Sab: 8:00 AM - 8:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <h3 class="section-title">Síguenos en Redes Sociales</h3>
+                    <div class="social-links">
+                        <a *ngFor="let social of socialLinks" [href]="social.url" class="social-link"
+                            [title]="social.name" target="_blank">
+                            <img [src]="social.image" [alt]="social.name + ' icon'" class="social-image">
+                            <span class="social-name">{{ social.name }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enlaces Rápidos -->
+    <section class="quick-links-section">
+        <div class="container">
+            <h3 class="section-title">Enlaces Rápidos</h3>
+            <div class="quick-links">
+                <a *ngFor="let link of quickLinks" [href]="link.url" class="quick-link">
+                    {{ link.name }}
+                </a>
+            </div>
+        </div>
+    </section>
+</div>

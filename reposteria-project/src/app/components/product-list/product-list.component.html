@@ -1,0 +1,12 @@
+<section class="product-list">
+    <h2>Productos Destacados</h2>
+    <div class="products-grid">
+        @for (product of products; track product.id) {
+        <div class="product-card">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <span class="price">${{ product.price }}</span>
+        </div>
+        }
+    </div>
+</section>

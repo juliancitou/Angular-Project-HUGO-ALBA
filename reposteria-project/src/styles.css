@@ -1,0 +1,31 @@
+/* Fuentes elegantes */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #FFF9FB;
+  color: #5D5D5D;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Playfair Display', serif;
+  color: #D46A8C;
+  /* Color consistente para todos los títulos */
+}
+
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
+}

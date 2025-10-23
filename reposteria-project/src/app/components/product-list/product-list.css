@@ -1,0 +1,133 @@
+.product-list {
+    padding: 80px 20px;
+    background: linear-gradient(180deg, #FFF9FB 0%, #FFF0F5 100%);
+    position: relative;
+}
+
+.product-list::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #FFB6C1, transparent);
+}
+
+.product-list h2 {
+    text-align: center;
+    color: #D46A8C;
+    /* Mismo rosa que el hero */
+    margin-bottom: 50px;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    position: relative;
+}
+
+.product-list h2::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #FF9AA2, #FFB7B2);
+    border-radius: 2px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(255, 182, 193, 0.15);
+    border: 1px solid rgba(255, 182, 193, 0.2);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FF9AA2, #FFB7B2, #B5EAD7);
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(255, 182, 193, 0.25);
+    border-color: rgba(255, 182, 193, 0.4);
+}
+
+.product-card h3 {
+    color: #D46A8C;
+    /* Rosa consistente */
+    margin-bottom: 15px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.product-card p {
+    color: #8B5D6E;
+    /* Gris rosado como el hero */
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.price {
+    font-size: 1.8rem;
+    color: #FF6B8B;
+    /* Rosa más vibrante para precios */
+    font-weight: 700;
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(255, 182, 193, 0.1);
+    border-radius: 25px;
+    border: 2px solid rgba(255, 182, 193, 0.3);
+}
+
+/* Efectos decorativos */
+.product-card:nth-child(1)::before {
+    background: linear-gradient(90deg, #FF9AA2, #FFB7B2);
+}
+
+.product-card:nth-child(2)::before {
+    background: linear-gradient(90deg, #B5EAD7, #C7CEEA);
+}
+
+.product-card:nth-child(3)::before {
+    background: linear-gradient(90deg, #FFDAC1, #E2F0CB);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-list {
+        padding: 60px 20px;
+    }
+
+    .product-list h2 {
+        font-size: 2rem;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
