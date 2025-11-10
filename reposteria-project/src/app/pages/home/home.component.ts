@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
+import { ProductListComponent } from '../../components/product-list/product-list.component';
+// Asegúrate de importar estos componentes o crearlos:
 import { HeaderComponent } from '../../components/header/header.component';
 import { HeroComponent } from '../../components/hero/hero.component';
-import { ProductListComponent } from '../../components/product-list/product-list.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 
 @Component({
@@ -10,12 +12,13 @@ import { FooterComponent } from '../../components/footer/footer.component';
     standalone: true,
     imports: [
         CommonModule,
-        HeaderComponent,
-        HeroComponent,
         ProductListComponent,
-        FooterComponent
+        HeaderComponent,  // ← Necesitas este componente
+        HeroComponent,    // ← Necesitas este componente
+        FooterComponent   // ← Necesitas este componente
     ],
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
 })
-export class HomeComponent { }
+export class HomeComponent {
+    constructor(private productService: ProductService) { }
+}
