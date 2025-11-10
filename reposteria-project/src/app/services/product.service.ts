@@ -1,33 +1,25 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Product } from '../models/product.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProductService {
-    getFeaturedProducts(): Product[] {
-        return [
-            {
-                id: 1,
-                name: 'Pastel de Chocolate Clásico',
-                description: 'Delicioso pastel de chocolate con crema de mantequilla y decorado con fresas frescas',
-                price: 350,
-                category: 'Pasteles'
-            },
-            {
-                id: 2,
-                name: 'Cupcakes de Vainilla',
-                description: 'Esponjosos cupcakes de vainilla con frosting de crema y sprinkles coloridos',
-                price: 25,
-                category: 'Cupcakes'
-            },
-            {
-                id: 3,
-                name: 'Galletas de Mantequilla',
-                description: 'Crujientes galletas de mantequilla con chispas de chocolate',
-                price: 15,
-                category: 'Galletas'
-            }
-        ];
+    private apiUrl = 'http://localhost:8000/api'; // URL de tu API Laravel
+
+    constructor(private http: HttpClient) { }
+
+    getFeaturedProducts(): Observable<Product[]> {
+        return this.http.get<Product[]>(`${this.apiUrl}/products`);
+    }
+
+    getProductById(id: number): Observable<Product> {
+        return this.http.get<Product>(`${this.apiUrl}/products/${id}`);
+    }
+
+    getProductsByCategory(category: string): Observable<Product[]> {
+        return this.http.get<Product[]>(`${this.apiUrl}/products/category/${category}`);
     }
 }
