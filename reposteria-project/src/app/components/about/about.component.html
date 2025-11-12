@@ -1,4 +1,6 @@
+<app-header></app-header>
 <div class="about-page">
+
     <!-- Hero Section -->
     <section class="about-hero">
         <div class="container">
@@ -107,18 +109,6 @@
                         </a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Enlaces Rápidos -->
-    <section class="quick-links-section">
-        <div class="container">
-            <h3 class="section-title">Enlaces Rápidos</h3>
-            <div class="quick-links">
-                <a *ngFor="let link of quickLinks" [href]="link.url" class="quick-link">
-                    {{ link.name }}
-                </a>
             </div>
         </div>
     </section>

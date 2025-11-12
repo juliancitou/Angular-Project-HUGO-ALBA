@@ -5,7 +5,7 @@ import { HeaderComponent } from "../../components/header/header.component";
 @Component({
     selector: 'app-about',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, HeaderComponent],
     templateUrl: './about.component.html',
     styleUrls: ['./about.component.css']
 })
@@ -31,13 +31,6 @@ export class AboutComponent {
             image: 'assets/logo-gmail.png',
             url: '#'
         }
-    ];
-
-    quickLinks = [
-        { name: 'Inicio', url: '/' },
-        { name: 'Productos', url: '/productos' },
-        { name: 'Acerca de', url: '/acerca' },
-        { name: 'Contacto', url: '/contacto' }
     ];
 
     teamMembers = [

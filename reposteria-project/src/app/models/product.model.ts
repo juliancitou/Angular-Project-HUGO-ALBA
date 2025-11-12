@@ -1,9 +1,9 @@
-// src/app/models/product.model.ts
 export interface Product {
     id: number;
     name: string;
+    description: string;
     price: number;
-    description?: string;
-    image?: string;
-    // añade más propiedades según necesites
+    image: string;
+    category: string;
+    // ... otras propiedades
 }
