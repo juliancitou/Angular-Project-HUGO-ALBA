@@ -163,4 +163,74 @@
     .brand-name {
         font-size: 1.2rem;
     }
+
+    /* Botón de Administración */
+    .admin-btn {
+        background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+        color: white !important;
+        border-radius: 20px;
+        padding: 0.5rem 1.2rem !important;
+        margin-right: 0.5rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .admin-btn:hover {
+        background: linear-gradient(45deg, #FF5252, #FF7B7B);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+    }
+
+    /* Botón de usuario logueado */
+    .btn-user {
+        background: linear-gradient(45deg, #B5EAD7, #C7CEEA);
+        border: 2px solid rgba(181, 234, 215, 0.8);
+        color: #2D5D53;
+        border-radius: 25px;
+        padding: 0.5rem 1.2rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-user:hover {
+        background: linear-gradient(45deg, #9DD9C5, #B5BCE8);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(181, 234, 215, 0.4);
+    }
+
+    /* Dropdown de usuario */
+    .dropdown-menu .dropdown-item.text-danger {
+        color: #dc3545 !important;
+    }
+
+    .dropdown-menu .dropdown-item.text-danger:hover {
+        background-color: #f8d7da;
+        color: #721c24 !important;
+    }
+
+    /* Estado de autenticación */
+    .auth-section {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .admin-btn {
+            margin: 0.5rem 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-user {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .auth-section {
+            flex-direction: column;
+            width: 100%;
+            gap: 0.5rem;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, catchError } from 'rxjs'; // ← Agregar catchError
+import { throwError } from 'rxjs'; // ← Agregar throwError
 
 const LARAVEL_API = 'http://localhost:8000/api';
 
@@ -11,33 +12,52 @@ export class AuthService {
 
     constructor(private http: HttpClient) { }
 
-    login(credentials: { email: string, password: string }): Observable<any> {
-        return this.http.post(`${LARAVEL_API}/login`, credentials).pipe(
+    register(userData: any): Observable<any> {
+        return this.http.post(`${LARAVEL_API}/register`, userData).pipe(
             tap((response: any) => {
-                if (response.token) {
-                    localStorage.setItem('auth_token', response.token);
+                // Guardar usuario en localStorage (sin token)
+                if (response.user) {
                     localStorage.setItem('user', JSON.stringify(response.user));
                 }
             })
         );
     }
 
-    register(userData: any): Observable<any> {
-        return this.http.post(`${LARAVEL_API}/register`, userData);
+    login(credentials: { email: string, password: string }): Observable<any> {
+        return this.http.post(`${LARAVEL_API}/login`, credentials).pipe(
+            tap((response: any) => {
+                if (response.user) {
+                    localStorage.setItem('user', JSON.stringify(response.user));
+                }
+            })
+        );
     }
 
-    logout(): void {
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('user');
+    logout(): Observable<any> {
+        return this.http.post(`${LARAVEL_API}/logout`, {}).pipe(
+            tap(() => {
+                // Limpiar localStorage
+                localStorage.removeItem('user');
+            }),
+            catchError(error => {
+                // Si hay error, igual limpiar localmente
+                localStorage.removeItem('user');
+                return throwError(() => error); // ← Sintaxis corregida
+            })
+        );
+    }
+
+    getCurrentUser(): Observable<any> {
+        return this.http.get(`${LARAVEL_API}/user`);
     }
 
     isLoggedIn(): boolean {
-        return !!localStorage.getItem('auth_token');
+        return !!localStorage.getItem('user');
     }
 
-    isAdmin(): boolean {  // ← AGREGAR ESTE MÉTODO
+    isAdmin(): boolean {
         const user = this.getUser();
-        return user && user.role === 'admin'; // Ajusta según tu lógica de roles
+        return user && user.role === 'admin';
     }
 
     getUser(): any {

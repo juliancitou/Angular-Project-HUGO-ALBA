@@ -1,0 +1,32 @@
+<div class="products-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="page-title">Nuestros Productos</h1>
+                <p class="page-subtitle">Descubre nuestra deliciosa selección de repostería</p>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="products.length > 0">
+            <div class="col-md-4 mb-4" *ngFor="let product of products">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img [src]="product.image || 'assets/default-product.jpg'" [alt]="product.name">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <p class="product-description">{{ product.description }}</p>
+                        <div class="product-price">${{ product.price }}</div>
+                        <div class="product-category">{{ product.category }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="products.length === 0">
+            <div class="col-12 text-center">
+                <p>No hay productos disponibles en este momento.</p>
+            </div>
+        </div>
+    </div>
+</div>
