@@ -9,7 +9,6 @@ import { RouterModule } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-
 export class HeaderComponent {
   brandName = 'Encanto';
 
@@ -18,4 +17,9 @@ export class HeaderComponent {
     { name: 'Productos', path: '/productos', icon: 'bi bi-basket' },
     { name: 'Acerca de', path: '/acerca', icon: 'bi bi-info-circle' },
   ];
+
+  // Método para navegar al login
+  goToLogin(): void {
+    // Esto se manejará desde el template con routerLink
+  }
 }

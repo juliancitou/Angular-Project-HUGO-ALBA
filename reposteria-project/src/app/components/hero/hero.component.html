@@ -1,7 +1,35 @@
 <section class="hero">
+    <!-- Carrusel de imágenes -->
+    <div class="hero-carousel">
+        <div class="carousel-inner">
+            <div *ngFor="let slide of slides; let i = index" class="carousel-slide" [class.active]="i === currentSlide">
+                <img [src]="slide.image" [alt]="slide.alt" class="carousel-image">
+                <div class="carousel-overlay"></div>
+            </div>
+        </div>
+
+        <!-- Controles del carrusel -->
+        <button class="carousel-control prev" (click)="prevSlide()">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="carousel-control next" (click)="nextSlide()">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+            <button *ngFor="let slide of slides; let i = index" [class.active]="i === currentSlide"
+                (click)="goToSlide(i)">
+            </button>
+        </div>
+    </div>
+
+    <!-- Contenido del hero (texto y botón) -->
     <div class="hero-content">
-        <h1>{{ title }}</h1>
-        <p>{{ subtitle }}</p>
-        <button class="cta-button">{{ buttonText }}</button>
+        <div class="container">
+            <h1>{{ title }}</h1>
+            <p>{{ subtitle }}</p>
+            <button class="cta-button">{{ buttonText }}</button>
+        </div>
     </div>
 </section>

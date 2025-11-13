@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';  // ← Ruta correctaimport { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  standalone: true,  // ← Agregar esta línea
-  imports: [CommonModule, FormsModule],  // ← Agregar imports
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -19,6 +20,7 @@ export class LoginComponent {
 
   isLoading = false;
   errorMessage = '';
+  showPassword = false; // ← Nueva propiedad para controlar visibilidad
 
   constructor(
     private authService: AuthService,
@@ -32,12 +34,17 @@ export class LoginComponent {
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
         this.isLoading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/']); // ← Redirigir al home
       },
       error: (error) => {
         this.isLoading = false;
         this.errorMessage = error.message || 'Error en el login';
       }
     });
+  }
+
+  // Método para mostrar/ocultar contraseña
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

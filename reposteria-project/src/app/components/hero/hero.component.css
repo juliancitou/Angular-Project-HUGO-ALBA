@@ -1,80 +1,256 @@
 .hero {
-    background: linear-gradient(135deg, #FFF0F5 0%, #FFE4E6 50%, #F8C8DC 100%);
-    padding: 100px 20px;
-    text-align: center;
     position: relative;
+    height: 80vh;
+    min-height: 600px;
     overflow: hidden;
 }
 
-.hero::before {
-    content: '';
+/* Carrusel */
+.hero-carousel {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="%23FFB6C1" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="%23FFB6C1" opacity="0.1"/><circle cx="40" cy="80" r="1" fill="%23FFB6C1" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.3;
+    width: 100%;
+    height: 100%;
 }
 
-.hero-content {
+.carousel-inner {
     position: relative;
-    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.carousel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg,
+            rgba(255, 240, 245, 0.4) 0%,
+            rgba(255, 228, 230, 0.5) 50%,
+            rgba(248, 200, 220, 0.6) 100%);
+}
+
+/* Controles del carrusel */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 138, 138, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    color: #D46A8C;
+    font-size: 1.5rem;
+}
+
+.carousel-control:hover {
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-50%) scale(1.1);
+    color: #FF6B6B;
+}
+
+.carousel-control.prev {
+    left: 20px;
+}
+
+.carousel-control.next {
+    right: 20px;
+}
+
+/* Indicadores */
+.carousel-indicators {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid rgb(0, 0, 0);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators button.active {
+    background: rgb(240, 73, 123);
+    transform: scale(1.2);
+}
+
+.carousel-indicators button:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Contenido del hero */
+.hero-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    text-align: center;
+}
+
+.hero-content .container {
     max-width: 800px;
-    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .hero-content h1 {
-    color: #D46A8C;
-    /* Rosa más suave */
-    font-size: 3rem;
+    color: rgb(209, 23, 64);
+    font-size: 3.5rem;
     margin-bottom: 25px;
     font-family: 'Playfair Display', serif;
     font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
 }
 
 .hero-content p {
-    color: #8B5D6E;
-    /* Gris rosado */
-    font-size: 1.3rem;
+    color: rgb(134, 6, 38);
+    font-size: 1.4rem;
     margin-bottom: 40px;
     line-height: 1.6;
     font-weight: 400;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .cta-button {
     background: linear-gradient(45deg, #FF9AA2, #FFB7B2);
     color: white;
-    padding: 15px 40px;
+    padding: 18px 45px;
     border: none;
     border-radius: 30px;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 154, 162, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .cta-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255, 154, 162, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     background: linear-gradient(45deg, #FF8A94, #FFA8A3);
+}
+
+/* Efecto de transición automática */
+@keyframes slideTransition {
+
+    20%,
+    20% {
+        opacity: 1;
+    }
+
+    25%,
+    20% {
+        opacity: 1;
+    }
+
+    20% {
+        opacity: 1;
+    }
+}
+
+.carousel-slide {
+    animation: slideTransition 10s infinite;
+}
+
+.carousel-slide:nth-child(1) {
+    animation-delay: 5s;
+}
+
+.carousel-slide:nth-child(2) {
+    animation-delay: 5s;
+}
+
+.carousel-slide:nth-child(3) {
+    animation-delay: 5s;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .hero {
-        padding: 60px 20px;
+        height: 70vh;
+        min-height: 500px;
     }
 
     .hero-content h1 {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
     }
 
     .hero-content p {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+    }
+
+    .carousel-control {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .carousel-control.prev {
+        left: 10px;
+    }
+
+    .carousel-control.next {
+        right: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        padding: 15px 35px;
+        font-size: 1rem;
     }
 }

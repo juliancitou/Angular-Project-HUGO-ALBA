@@ -1,0 +1,123 @@
+<div class="register-page">
+    <!-- Header similar al login -->
+    <header class="custom-header">
+        <nav class="navbar">
+            <div class="container">
+                <!-- Logo y Nombre -->
+                <a class="navbar-brand" routerLink="/">
+                    <div class="brand-container">
+                        <div class="logo-placeholder">
+                            <img src="assets/logo-empresa-encanto.png" alt="Logo Encanto" class="logo-image">
+                        </div>
+                        <span class="brand-name">Encanto</span>
+                    </div>
+                </a>
+
+                <!-- Botón para volver atrás -->
+                <button class="btn btn-back" routerLink="/login">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Volver al Login
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido del registro -->
+    <div class="register-container">
+        <div class="register-card">
+            <!-- Encabezado del registro -->
+            <div class="register-header">
+                <h2>Crear Cuenta</h2>
+                <p>Únete a Encanto Repostería y descubre un mundo de sabores</p>
+            </div>
+
+            <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+                <!-- Nombre completo -->
+                <div class="form-group">
+                    <label for="name">Nombre Completo *</label>
+                    <input type="text" id="name" name="name" [(ngModel)]="userData.name" required
+                        placeholder="Tu nombre completo" minlength="2">
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" [(ngModel)]="userData.email" required email
+                        placeholder="tu@email.com">
+                </div>
+
+                <!-- Teléfono -->
+                <div class="form-group">
+                    <label for="phone">Teléfono</label>
+                    <input type="tel" id="phone" name="phone" [(ngModel)]="userData.phone"
+                        placeholder="+52 123 456 7890">
+                </div>
+
+                <!-- Dirección -->
+                <div class="form-group">
+                    <label for="address">Dirección</label>
+                    <textarea id="address" name="address" [(ngModel)]="userData.address" rows="3"
+                        placeholder="Tu dirección completa"></textarea>
+                </div>
+
+                <!-- Contraseña -->
+                <div class="form-group password-group">
+                    <label for="password">Contraseña *</label>
+                    <div class="password-input-container">
+                        <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
+                            [(ngModel)]="userData.password" required placeholder="••••••••" minlength="8"
+                            class="password-input">
+                        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                            <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                        </button>
+                    </div>
+                    <small class="form-text">Mínimo 8 caracteres</small>
+                </div>
+
+                <!-- Confirmar Contraseña -->
+                <div class="form-group password-group">
+                    <label for="password_confirmation">Confirmar Contraseña *</label>
+                    <div class="password-input-container">
+                        <input [type]="showConfirmPassword ? 'text' : 'password'" id="password_confirmation"
+                            name="password_confirmation" [(ngModel)]="userData.password_confirmation" required
+                            placeholder="••••••••" minlength="8" class="password-input">
+                        <button type="button" class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
+                            <i [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="register-actions">
+                    <button type="submit" class="register-btn" [disabled]="!registerForm.valid || isLoading">
+                        <span *ngIf="!isLoading">
+                            <i class="bi bi-person-plus me-2"></i>
+                            Crear Cuenta
+                        </span>
+                        <span *ngIf="isLoading">
+                            <i class="bi bi-arrow-repeat spinner me-2"></i>
+                            Creando cuenta...
+                        </span>
+                    </button>
+
+                    <button type="button" class="btn-back-secondary" routerLink="/login">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Cancelar
+                    </button>
+                </div>
+
+                <div *ngIf="errorMessage" class="error-message">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    {{ errorMessage }}
+                </div>
+            </form>
+
+            <div class="register-links">
+                <p>¿Ya tienes una cuenta?
+                    <a routerLink="/login" class="link-pastel">
+                        Inicia Sesión aquí
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
