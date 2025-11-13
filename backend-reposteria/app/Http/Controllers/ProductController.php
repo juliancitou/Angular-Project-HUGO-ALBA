@@ -16,20 +16,20 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        
+
         if (!$product) {
             return response()->json(['message' => 'Producto no encontrado'], 404);
         }
-        
+
         return response()->json($product);
     }
 
     public function byCategory($category)
     {
         $products = Product::where('category', $category)
-                          ->available()
-                          ->get();
-        
+            ->available()
+            ->get();
+
         return response()->json($products);
     }
 }
