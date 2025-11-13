@@ -28,18 +28,16 @@ Route::get('/test', function () {
 // Rutas públicas de autenticación
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']); // ← SACAR DEL MIDDLEWARE
+Route::get('/user', [AuthController::class, 'user']); // ← SACAR DEL MIDDLEWARE
 
 // Rutas públicas de productos
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 
-// Rutas protegidas (requieren autenticación)
-Route::middleware('auth:sanctum')->group(function () {
-    // Auth
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', [AuthController::class, 'user']);
-
-    // Productos (CRUD completo)
+// Rutas protegidas (requieren autenticación) - SOLO PARA ADMIN
+Route::middleware('auth')->group(function () {
+    // Productos (CRUD completo) - Solo admin
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{id}', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
