@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, catchError } from 'rxjs'; // ← Agregar catchError
-import { throwError } from 'rxjs'; // ← Agregar throwError
+import { Observable, tap, catchError } from 'rxjs';
+import { throwError } from 'rxjs';
 
 const LARAVEL_API = 'http://localhost:8000/api';
 
@@ -15,9 +15,9 @@ export class AuthService {
     register(userData: any): Observable<any> {
         return this.http.post(`${LARAVEL_API}/register`, userData).pipe(
             tap((response: any) => {
-                // Guardar usuario en localStorage (sin token)
                 if (response.user) {
                     localStorage.setItem('user', JSON.stringify(response.user));
+                    localStorage.setItem('token', response.token); // ← AGREGAR TOKEN
                 }
             })
         );
@@ -26,8 +26,9 @@ export class AuthService {
     login(credentials: { email: string, password: string }): Observable<any> {
         return this.http.post(`${LARAVEL_API}/login`, credentials).pipe(
             tap((response: any) => {
-                if (response.user) {
+                if (response.user && response.token) {
                     localStorage.setItem('user', JSON.stringify(response.user));
+                    localStorage.setItem('token', response.token); // ← AGREGAR TOKEN
                 }
             })
         );
@@ -36,13 +37,11 @@ export class AuthService {
     logout(): Observable<any> {
         return this.http.post(`${LARAVEL_API}/logout`, {}).pipe(
             tap(() => {
-                // Limpiar localStorage
-                localStorage.removeItem('user');
+                this.clearLocalStorage();
             }),
             catchError(error => {
-                // Si hay error, igual limpiar localmente
-                localStorage.removeItem('user');
-                return throwError(() => error); // ← Sintaxis corregida
+                this.clearLocalStorage();
+                return throwError(() => error);
             })
         );
     }
@@ -52,16 +51,25 @@ export class AuthService {
     }
 
     isLoggedIn(): boolean {
-        return !!localStorage.getItem('user');
+        return !!localStorage.getItem('token'); // ← CAMBIAR A TOKEN
     }
 
     isAdmin(): boolean {
         const user = this.getUser();
-        return user && user.role === 'admin';
+        return user && user.role === 'admin'; // ← Usar 'role' en lugar de 'is_admin'
     }
 
     getUser(): any {
         const user = localStorage.getItem('user');
         return user ? JSON.parse(user) : null;
+    }
+
+    getToken(): string | null {
+        return localStorage.getItem('token');
+    }
+
+    private clearLocalStorage(): void {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
     }
 }

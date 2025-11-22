@@ -1,9 +1,12 @@
 export interface Product {
-    id: number;
+    id?: number;
     name: string;
     description: string;
     price: number;
-    image: string;
     category: string;
-    // ... otras propiedades
+    stock: number; // ← AGREGAR
+    image_url: string; // ← AGREGAR
+    is_available: boolean; // ← AGREGAR
+    created_at?: string;
+    updated_at?: string;
 }

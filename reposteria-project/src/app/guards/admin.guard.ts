@@ -13,7 +13,12 @@ export class AdminGuard implements CanActivate {
         if (this.authService.isLoggedIn() && this.authService.isAdmin()) {
             return true;
         } else {
-            this.router.navigate(['/']);
+            // Redirigir a login si no está autenticado, o a home si no es admin
+            if (!this.authService.isLoggedIn()) {
+                this.router.navigate(['/login']);
+            } else {
+                this.router.navigate(['/']);
+            }
             return false;
         }
     }

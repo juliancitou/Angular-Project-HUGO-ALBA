@@ -11,7 +11,7 @@
             <div class="col-md-4 mb-4" *ngFor="let product of products">
                 <div class="product-card">
                     <div class="product-image">
-                        <img [src]="product.image || 'assets/default-product.jpg'" [alt]="product.name">
+                        <img [src]="product.image_url || 'assets/default-product.jpg'" [alt]="product.name">
                     </div>
                     <div class="product-info">
                         <h3 class="product-name">{{ product.name }}</h3>

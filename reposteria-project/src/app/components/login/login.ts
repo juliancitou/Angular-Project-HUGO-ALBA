@@ -17,10 +17,9 @@ export class LoginComponent {
     email: '',
     password: ''
   };
-
   isLoading = false;
   errorMessage = '';
-  showPassword = false; // ← Nueva propiedad para controlar visibilidad
+  showPassword = false;
 
   constructor(
     private authService: AuthService,
@@ -32,18 +31,28 @@ export class LoginComponent {
     this.errorMessage = '';
 
     this.authService.login(this.credentials).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         this.isLoading = false;
-        this.router.navigate(['/']); // ← Redirigir al home
+
+        // CORREGIDO: ahora verifica el campo 'role' que sí existe
+        if (response.user?.role === 'admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.message || 'Error en el login';
+        // Mensajes más claros
+        if (error.status === 422) {
+          this.errorMessage = 'Las credenciales son incorrectas.';
+        } else {
+          this.errorMessage = error.error?.message || 'Error al conectar con el servidor';
+        }
       }
     });
   }
 
-  // Método para mostrar/ocultar contraseña
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }

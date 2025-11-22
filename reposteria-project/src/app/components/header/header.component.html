@@ -1,111 +1,76 @@
 <header class="custom-header">
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <!-- Logo y Nombre -->
+
+            <!-- LOGO + NOMBRE (izquierda) -->
             <a class="navbar-brand" routerLink="/">
                 <div class="brand-container">
                     <div class="logo-placeholder">
                         <img src="assets/logo-empresa-encanto.png" alt="Logo Encanto" class="logo-image">
                     </div>
-                    <span class="brand-name">{{ brandName }}</span>
+                    <span class="brand-name">Encanto</span>
                 </div>
             </a>
 
-            <!-- Botón para móvil -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <!-- DERECHA: Todo alineado a la derecha -->
+            <div class="ms-auto d-flex align-items-center gap-3">
 
-            <!-- Menú principal -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <!-- Botón de Administración (solo para admin) - TEMPORAL -->
-                    <li class="nav-item" *ngIf="isAdmin">
-                        <a class="nav-link admin-btn" href="#" (click)="$event.preventDefault()">
-                            <i class="bi bi-gear me-1"></i>
-                            Administración (Próximamente)
-                        </a>
-                    </li>
-                </ul>
+                <!-- TEXTO "Administrador" solo si es admin -->
+                <span *ngIf="isAdmin" class="text-admin fw-bold text-danger">
+                    <i class="bi bi-shield-lock me-2"></i>
+                    Administrador
+                </span>
 
-                <!-- Sección derecha - Menú desplegable y Auth -->
-                <div class="d-flex align-items-center header-actions">
-                    <!-- Menú desplegable -->
-                    <div class="dropdown me-3">
-                        <button class="btn btn-menu dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-list me-2"></i>
-                            Menú
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li *ngFor="let item of menuItems">
-                                <a class="dropdown-item" [routerLink]="item.path" routerLinkActive="active">
-                                    <i [class]="item.icon" class="me-2"></i>
-                                    {{ item.name }}
-                                </a>
-                            </li>
+                <!-- BOTÓN ADMIN solo si es admin -->
+                <a *ngIf="isAdmin" routerLink="/admin" class="btn btn-admin-temp">
+                    <i class="bi bi-speedometer2 me-2"></i>
+                    Panel Admin
+                </a>
 
-                            <!-- Opciones adicionales para usuarios logueados -->
-                            <li *ngIf="isLoggedIn">
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li *ngIf="isLoggedIn">
-                                <a class="dropdown-item" href="#" (click)="$event.preventDefault()">
-                                    <i class="bi bi-person me-2"></i>
-                                    Mi Perfil (Próximamente)
-                                </a>
-                            </li>
-                            <li *ngIf="isAdmin">
-                                <a class="dropdown-item" href="#" (click)="$event.preventDefault()">
-                                    <i class="bi bi-gear me-2"></i>
-                                    Panel Admin (Próximamente)
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Estado de autenticación -->
-                    <div class="auth-section" *ngIf="isLoggedIn; else loginSection">
-                        <!-- Usuario logueado -->
-                        <div class="dropdown">
-                            <button class="btn btn-user dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle me-1"></i>
-                                {{ userName }}
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" href="#" (click)="$event.preventDefault()">
-                                        <i class="bi bi-person me-2"></i>
-                                        Mi Perfil (Próximamente)
-                                    </a>
-                                </li>
-                                <li *ngIf="isAdmin">
-                                    <a class="dropdown-item" href="#" (click)="$event.preventDefault()">
-                                        <i class="bi bi-gear me-2"></i>
-                                        Administración (Próximamente)
-                                    </a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item text-danger" href="#"
-                                        (click)="logout(); $event.preventDefault()">
-                                        <i class="bi bi-box-arrow-right me-2"></i>
-                                        Cerrar Sesión
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Usuario no logueado -->
-                    <ng-template #loginSection>
-                        <button class="btn btn-outline-primary" type="button" routerLink="/login">
-                            <i class="bi bi-person me-1"></i>
-                            Iniciar Sesión
-                        </button>
-                    </ng-template>
+                <!-- MENÚ DESPLEGABLE (Inicio, Productos, Acerca de) -->
+                <div class="dropdown">
+                    <button class="btn btn-menu dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-list me-2"></i>Menú
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li *ngFor="let item of menuItems">
+                            <a class="dropdown-item" routerLink="{{item.path}}" routerLinkActive="active">
+                                <i class="{{item.icon}} me-3"></i>
+                                {{ item.name }}
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+
+                <!-- BOTÓN INICIAR / CERRAR SESIÓN -->
+                <button *ngIf="!isLoggedIn" class="btn btn-outline-primary" routerLink="/login">
+                    <i class="bi bi-person me-2"></i>
+                    Iniciar Sesión
+                </button>
+
+                <div *ngIf="isLoggedIn" class="dropdown">
+                    <button class="btn btn-user dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle me-2"></i>
+                        {{ userName }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" routerLink="/perfil">
+                                <i class="bi bi-person me-3"></i> Mi Perfil
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <button class="dropdown-item text-danger" (click)="logout()">
+                                <i class="bi bi-box-arrow-right me-3"></i>
+                                Cerrar Sesión
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </nav>

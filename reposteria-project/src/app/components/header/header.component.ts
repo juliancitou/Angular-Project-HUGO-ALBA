@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router'; // ← Agregar esta importación
 
 @Component({
   selector: 'app-header',
@@ -11,32 +10,39 @@ import { Router } from '@angular/router'; // ← Agregar esta importación
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   brandName = 'Encanto';
   isLoggedIn = false;
   isAdmin = false;
   userName = '';
 
   menuItems = [
-    { name: 'Inicio', path: '/', icon: 'bi bi-house' },
+    { name: 'Inicio', path: '/', icon: 'bi bi-house-door' },
     { name: 'Productos', path: '/productos', icon: 'bi bi-basket' },
     { name: 'Acerca de', path: '/acerca', icon: 'bi bi-info-circle' },
   ];
 
-  constructor(private authService: AuthService,
-    private router: Router) { }
+  private intervalId: any;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.checkAuthStatus();
+    this.updateAuthStatus();
 
-    // Escuchar cambios en el estado de autenticación
-    // Esto se puede mejorar con un Observable en el futuro
-    setInterval(() => {
-      this.checkAuthStatus();
+    // Escuchar cambios en tiempo real (mejor que setInterval)
+    this.intervalId = setInterval(() => {
+      this.updateAuthStatus();
     }, 1000);
   }
 
-  checkAuthStatus(): void {
+  ngOnDestroy(): void {
+    if (this.intervalId) clearInterval(this.intervalId);
+  }
+
+  private updateAuthStatus(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
     this.isAdmin = this.authService.isAdmin();
 
@@ -48,19 +54,19 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  // En el método logout, simplificar sin recargar página
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         this.isLoggedIn = false;
         this.isAdmin = false;
         this.userName = '';
-        // Navegar al home en lugar de recargar
         this.router.navigate(['/']);
       },
-      error: (error) => {
-        console.error('Error al cerrar sesión:', error);
-        // Forzar logout localmente
+      error: () => {
+        // Aunque falle el backend, forzamos cierre local
+        localStorage.removeItem('token');
         localStorage.removeItem('user');
         this.isLoggedIn = false;
         this.isAdmin = false;

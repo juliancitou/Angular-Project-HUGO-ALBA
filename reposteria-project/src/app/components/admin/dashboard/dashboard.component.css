@@ -1,0 +1,10 @@
+.admin-dashboard {
+    padding: 2rem;
+    min-height: 80vh;
+    background: #f8f9fa;
+}
+
+.admin-dashboard h1 {
+    color: #D46A8C;
+    margin-bottom: 1rem;
+}
