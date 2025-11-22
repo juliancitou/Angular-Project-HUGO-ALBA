@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log; // ← AGREGAR ESTA IMPORTACIÓN
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -32,8 +31,8 @@ class AuthController extends Controller
                 'role' => 'user',
             ]);
 
-            // Login automático después del registro
-            Auth::login($user);
+            // CORREGIDO: era ccreateToken → createToken
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'user' => [
@@ -43,13 +42,12 @@ class AuthController extends Controller
                     'role' => $user->role,
                     'phone' => $user->phone,
                 ],
+                'token' => $token,
                 'message' => 'Usuario registrado exitosamente'
             ], 201);
         } catch (\Exception $e) {
-            // Usar Log en lugar de \Log
-            Log::error('Error en registro: ' . $e->getMessage());
             return response()->json([
-                'message' => 'Error interno del servidor: ' . $e->getMessage()
+                'message' => 'Error al registrar usuario'
             ], 500);
         }
     }
@@ -64,6 +62,9 @@ class AuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             $user = Auth::user();
 
+            // CORREGIDO: era ccreateToken → createToken
+            $token = $user->createToken('auth_token')->plainTextToken;
+
             return response()->json([
                 'user' => [
                     'id' => $user->id,
@@ -72,6 +73,7 @@ class AuthController extends Controller
                     'role' => $user->role,
                     'phone' => $user->phone,
                 ],
+                'token' => $token,
                 'message' => 'Login exitoso'
             ]);
         }
@@ -83,32 +85,26 @@ class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
 
-        return response()->json([
-            'message' => 'Sesión cerrada exitosamente'
-        ]);
+        return response()->json(['message' => 'Sesión cerrada exitosamente']);
     }
 
     public function user(Request $request): JsonResponse
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return response()->json(['user' => null]);
-        }
+        $user = $request->user();
 
         return response()->json([
-            'user' => [
+            'user' => $user ? [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
                 'phone' => $user->phone,
                 'address' => $user->address,
-            ]
+            ] : null
         ]);
     }
 }

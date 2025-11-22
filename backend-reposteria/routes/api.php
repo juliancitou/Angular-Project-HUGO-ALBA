@@ -1,44 +1,51 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\Admin\UserAdminController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-// Ruta de prueba para verificar que la API funciona
+// ==================== RUTA DE PRUEBA ====================
 Route::get('/test', function () {
     return response()->json([
         'message' => '¡API de Repostería Encanto funcionando!',
-        'status' => 'success',
+        'status'  => 'success',
         'timestamp' => now()
     ]);
 });
 
-// Rutas públicas de autenticación
+// ==================== RUTAS PÚBLICAS ====================
+
+// Auth (registro y login)
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']); // ← SACAR DEL MIDDLEWARE
-Route::get('/user', [AuthController::class, 'user']); // ← SACAR DEL MIDDLEWARE
+Route::post('/login',    [AuthController::class, 'login']);
 
-// Rutas públicas de productos
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{id}', [ProductController::class, 'show']);
+// Productos (solo lectura para todos)
+Route::get('/products',        [ProductController::class, 'index']);
+Route::get('/products/{id}',   [ProductController::class, 'show']);
 
-// Rutas protegidas (requieren autenticación) - SOLO PARA ADMIN
-Route::middleware('auth')->group(function () {
-    // Productos (CRUD completo) - Solo admin
-    Route::post('/products', [ProductController::class, 'store']);
-    Route::put('/products/{id}', [ProductController::class, 'update']);
-    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+// ==================== RUTAS PROTEGIDAS (auth:sanctum) ====================
+Route::middleware('auth:sanctum')->group(function () {
+
+    // Logout y obtener usuario actual
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user',    [AuthController::class, 'user']);
+
+    // ==================== RUTAS SOLO ADMIN ====================
+    Route::middleware('admin')->group(function () {
+
+        // Gestión de administradores
+        Route::get('/admin/users', [UserAdminController::class, 'index']);   // Listar admins
+        Route::post('/admin/users', [UserAdminController::class, 'store']);  // Crear admin
+
+        // Gestión completa de productos
+        Route::post('/products',          [ProductController::class, 'store']);
+        Route::put('/products/{id}',      [ProductController::class, 'update']);
+        Route::delete('/products/{id}',   [ProductController::class, 'destroy']);
+
+        // Gestión de imágenes
+        Route::post('/images/upload', [ImageController::class, 'upload']);
+        Route::delete('/images/delete', [ImageController::class, 'delete']);
+    });
 });

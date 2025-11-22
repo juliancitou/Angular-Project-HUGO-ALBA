@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+// ESTOS USES SON OBLIGATORIOS EN LARAVEL 11+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens; // ← AGREGAR ESTA LÍNEA
+use Laravel\Sanctum\HasApiTokens; // ← este
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable; // ← AGREGAR HasApiTokens aquí
+    use HasApiTokens;     // ← PRIMERO
+    use HasFactory;       // ← segundo
+    use Notifiable;       // ← tercero
 
     protected $fillable = [
         'name',
