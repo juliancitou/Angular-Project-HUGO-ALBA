@@ -1,29 +1,55 @@
+// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { AboutComponent } from './components/about/about.component';
 import { LoginComponent } from './components/login/login';
 import { RegisterComponent } from './components/register/register.component';
-import { ProductsComponent } from './components/products/products.component';
+import { AdminDashboardComponent } from './admin/admin-dashboard.component';
 
-// Rutas del admin (usando loadComponent porque son standalone)
+// COMPONENTE NUEVO: Crear Producto
+import { CreateProductComponent } from './admin/create-product/create-product';
+
+// Guards
+import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
+
 export const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'acerca', component: AboutComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'productos', component: ProductsComponent },
 
-    // RUTAS DEL PANEL ADMIN
+    // ==================== ÁREA DE ADMINISTRACIÓN ====================
     {
         path: 'admin',
-        loadComponent: () => import('./components/admin/admin').then(m => m.AdminComponent),
-        // canActivate: [AdminGuard], // ← Descomenta cuando ya tengas el guard
-    },
-    {
-        path: 'admin/create-admin',
-        loadComponent: () => import('./components/admin/create-admin/create-admin').then(m => m.CreateAdminComponent),
-        // canActivate: [AdminGuard],
+        canActivate: [AuthGuard, AdminGuard], // Solo usuarios logueados + rol admin
+        children: [
+            // Dashboard principal (productos, pedidos, etc.)
+            {
+                path: '',
+                component: AdminDashboardComponent
+            },
+
+            // Crear nuevo producto → componente independiente
+            {
+                path: 'create-product',
+                loadComponent: () => import('./admin/create-product/create-product')
+                    .then(m => m.CreateProductComponent),
+                title: 'Crear Producto - Encanto Admin'
+            },
+
+            // Opcional: también puedes tener editar producto
+            {
+                path: 'edit-product/:id',
+                loadComponent: () => import('./admin/edit-product/edit-product')
+                    .then(m => m.EditProduct),
+                title: 'Editar Producto - Encanto Admin'
+            },
+
+            // Si más adelante quieres separar órdenes, crear admin, etc.
+            // { path: 'orders', component: OrdersComponent },
+            // { path: 'create-admin', component: CreateAdminComponent },
+        ]
     },
 
-    { path: '**', redirectTo: '', pathMatch: 'full' }
+    // Ruta por defecto y wildcard
+    { path: '**', redirectTo: '' }
 ];

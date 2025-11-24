@@ -1,56 +1,80 @@
+// src/app/services/product.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { Product } from '../models/product.model';
 import { AuthService } from './auth.service';
 
-const LARAVEL_API = 'http://localhost:8000/api';
+const API_URL = 'http://localhost:8000/api';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ProductService {
 
     constructor(
         private http: HttpClient,
-        private authService: AuthService // ← AGREGAR AuthService
+        private authService: AuthService
     ) { }
 
     getProducts(): Observable<Product[]> {
-        return this.http.get<Product[]>(`${LARAVEL_API}/products`);
+        return this.http.get<Product[]>(`${API_URL}/products`).pipe(
+            catchError(err => {
+                console.error('Error cargando productos:', err);
+                return throwError(() => err);
+            })
+        );
     }
 
+    // Añade esto dentro de tu ProductService (debajo de getProducts() por ejemplo)
+
+    getCategories(): Observable<any[]> {
+        return this.http.get<any[]>(`${API_URL}/categories`).pipe(
+            catchError(err => {
+                console.error('Error cargando categorías:', err);
+                return throwError(() => err);
+            })
+        );
+    }
     getProduct(id: number): Observable<Product> {
-        return this.http.get<Product>(`${LARAVEL_API}/products/${id}`);
+        return this.http.get<Product>(`${API_URL}/products/${id}`);
     }
 
-    // MÉTODOS PROTEGIDOS (SOLO ADMIN) - AGREGAR HEADERS
-    createProduct(productData: Product): Observable<Product> {
+    // ==================== MÉTODOS PARA ADMIN ====================
+
+    private getHeaders(): HttpHeaders {
         const token = this.authService.getToken();
-        const headers = new HttpHeaders({
+        return new HttpHeaders({
             'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         });
-
-        return this.http.post<Product>(`${LARAVEL_API}/products`, productData, { headers });
     }
 
-    updateProduct(id: number, productData: Product): Observable<Product> {
-        const token = this.authService.getToken();
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        });
+    createProduct(product: FormData): Observable<Product> {
+        const token = this.authService.getToken();   // ← AÑADE ESTA LÍNEA
 
-        return this.http.put<Product>(`${LARAVEL_API}/products/${id}`, productData, { headers });
+        return this.http.post<Product>(`${API_URL}/products`, product, {
+            headers: new HttpHeaders({
+                'Authorization': `Bearer ${token}`
+            })
+        });
     }
 
-    deleteProduct(id: number): Observable<any> {
-        const token = this.authService.getToken();
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
-        });
+    updateProduct(id: number | string, product: FormData): Observable<Product> {
+        const token = this.authService.getToken();   // ← AÑADE ESTA LÍNEA
 
-        return this.http.delete(`${LARAVEL_API}/products/${id}`, { headers });
+        return this.http.post<Product>(`${API_URL}/products/${id}`, product, {
+            headers: new HttpHeaders({
+                'Authorization': `Bearer ${token}`
+            })
+        });
+    }
+
+    deleteProduct(id: number | string): Observable<any> {
+        const token = this.authService.getToken();   // ← AÑADE ESTA LÍNEA
+
+        return this.http.delete(`${API_URL}/products/${id}`, {
+            headers: new HttpHeaders({
+                'Authorization': `Bearer ${token}`
+            })
+        });
     }
 }

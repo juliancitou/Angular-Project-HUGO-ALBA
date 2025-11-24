@@ -1,12 +1,15 @@
+// src/app/models/product.model.ts
 export interface Product {
     id?: number;
     name: string;
     description: string;
     price: number;
     category: string;
-    stock: number; // ← AGREGAR
-    image_url: string; // ← AGREGAR
-    is_available: boolean; // ← AGREGAR
+    category_id?: number;
+    stock: number;
+    is_available: boolean;
+    images: string[];           // ← ¡¡ESTO ES CLAVE!! (JSONB en Laravel)
+    slug?: string;
     created_at?: string;
     updated_at?: string;
 }

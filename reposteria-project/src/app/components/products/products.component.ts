@@ -1,3 +1,4 @@
+// src/app/components/products/products.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
@@ -28,5 +29,13 @@ export class ProductsComponent implements OnInit {
                 console.error('Error loading products:', error);
             }
         });
+    }
+
+    // FUNCIÓN CLAVE: obtiene la primera imagen del array JSONB
+    getFirstImage(product: Product): string {
+        if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+            return `http://localhost:8000/storage/${product.images[0]}`;
+        }
+        return 'assets/img/no-image.jpg'; // ← Crea esta imagen o usa una por defecto
     }
 }

@@ -10,4 +10,14 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    server: {
+        host: true,                    // Permite acceso desde ngrok
+        hmr: {
+            host: 'localhost',
+        },
+        // AQUÍ ESTÁ LA CLAVE: permite ngrok
+        allowedHosts: 'all'            // ← Permite TODOS los hosts (ngrok, localhost, etc)
+        // O más seguro:
+        // allowedHosts: ['.ngrok-free.app', '.ngrok.io', '.ngrok.app']
+    }
 });

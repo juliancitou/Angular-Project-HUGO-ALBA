@@ -1,0 +1,127 @@
+<!-- src/app/admin/create-product/create-product.component.html -->
+<div class="create-product-page min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-pink-100 py-12">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-2xl rounded-3xl overflow-hidden">
+
+                    <!-- CABECERA -->
+                    <div class="card-header bg-gradient-to-r from-pink-500 to-rose-500 text-white text-center py-6">
+                        <button routerLink="/admin/create-product" class="btn btn-create-product">
+                            + Agregar Producto Nuevo
+                        </button>
+                        <p class="mt-2 opacity-90">Llena todos los datos para agregar un nuevo dulce a Encanto</p>
+                    </div>
+
+                    <!-- FORMULARIO -->
+                    <div class="card-body p-8 bg-white">
+                        <form (ngSubmit)="submit()" #productForm="ngForm">
+
+                            <!-- NOMBRE Y PRECIO -->
+                            <div class="row mb-5">
+                                <div class="col-md-8">
+                                    <label class="form-label text-pink-700 font-bold">Nombre del Producto *</label>
+                                    <input type="text"
+                                        class="form-control form-control-lg rounded-xl border-pink-200 focus:border-pink-500 focus:ring-pink-200"
+                                        [(ngModel)]="product.name" name="name" required
+                                        placeholder="Ej: Pastel de Chocolate Clásico">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-pink-700 font-bold">Precio (MXN) *</label>
+                                    <input type="number" step="0.01" class="form-control form-control-lg rounded-xl"
+                                        [(ngModel)]="product.price" name="price" required min="1" placeholder="350.00">
+                                </div>
+                            </div>
+
+                            <!-- DESCRIPCIÓN -->
+                            <div class="mb-5">
+                                <label class="form-label text-pink-700 font-bold">Descripción</label>
+                                <textarea class="form-control rounded-xl" rows="4" [(ngModel)]="product.description"
+                                    name="description" placeholder="Describe tu delicioso producto..."></textarea>
+                            </div>
+
+                            <!-- CATEGORÍA, STOCK Y DISPONIBLE -->
+                            <div class="row mb-5">
+                                <div class="col-md-6">
+                                    <label class="form-label text-pink-700 font-bold">Categoría *</label>
+                                    <select class="form-select form-select-lg rounded-xl"
+                                        [(ngModel)]="product.category_id" name="category_id" required>
+                                        <option value="">Selecciona una categoría</option>
+                                        <option *ngFor="let cat of categories" [value]="cat.id">
+                                            {{ cat.name }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label text-pink-700 font-bold">Stock</label>
+                                    <input type="number" class="form-control form-control-lg rounded-xl"
+                                        [(ngModel)]="product.stock" name="stock" min="0" value="10">
+                                </div>
+
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox"
+                                            [(ngModel)]="product.is_available" name="is_available"
+                                            id="isAvailableSwitch">
+                                        <label class="form-check-label text-pink-600 font-bold" for="isAvailableSwitch">
+                                            Disponible para venta
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- IMÁGENES -->
+                            <div class="mb-5">
+                                <label class="form-label text-pink-700 font-bold">
+                                    Imágenes del Producto (máximo 5)
+                                </label>
+                                <input type="file" class="form-control rounded-xl" (change)="onImagesSelected($event)"
+                                    multiple accept="image/*">
+
+                                <!-- Vista previa de imágenes -->
+                                <div class="row mt-4 g-3" *ngIf="imagePreviews.length > 0">
+                                    <div class="col-md-3" *ngFor="let preview of imagePreviews; let i = index">
+                                        <div class="position-relative">
+                                            <img [src]="preview" class="img-fluid rounded-3 shadow-lg"
+                                                style="height: 180px; width: 100%; object-fit: cover;">
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle m-2"
+                                                (click)="removeImage(i)" title="Eliminar imagen">
+                                                ×
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <small class="text-muted" *ngIf="imagePreviews.length === 0">
+                                    No has seleccionado imágenes aún
+                                </small>
+                            </div>
+
+                            <!-- BOTONES DE ACCIÓN -->
+                            <div class="text-center mt-5">
+                                <button type="button" class="btn btn-secondary btn-lg rounded-pill px-5 me-4"
+                                    routerLink="/admin">
+                                    Cancelar
+                                </button>
+
+                                <button type="submit" class="btn btn-success btn-lg rounded-pill px-5"
+                                    [disabled]="isLoading || productForm.invalid">
+                                    <span *ngIf="!isLoading">
+                                        Crear Producto
+                                    </span>
+                                    <span *ngIf="isLoading">
+                                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                        Guardando...
+                                    </span>
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

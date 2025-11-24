@@ -1,11 +1,69 @@
-<section class="product-list">
-    <h2>Productos Destacados</h2>
-    <div class="products-grid">
-        @for (product of products; track product.id) {
-        <div class="product-card">
-            <h3>{{ product.name }}</h3>
-            <p>{{ product.description }}</p>
-            <span class="price">${{ product.price }}</span>
+<section class="product-list-section">
+    <div class="container">
+        <!-- Encabezado mejorado -->
+        <div class="section-header">
+            <h2 class="section-title">Productos Destacados</h2>
+            <br> <!-- Añade esta línea -->
+            <p class="section-subtitle">Hechos con amor y los mejores ingredientes</p>
+        </div>
+
+        <!-- Grid de productos -->
+        <div class="products-grid">
+            @for (product of products; track product.id) {
+            <div class="product-card">
+                <!-- Contenedor de imagen -->
+                <div class="product-image-container">
+                    @if (getFirstImage(product.images)) {
+                    <img [src]="getFirstImage(product.images)" [alt]="product.name" class="product-image">
+                    } @else {
+                    <div class="product-image placeholder-image">
+                        <span class="placeholder-text">🎂 Delicioso</span>
+                    </div>
+                    }
+                    <!-- Badge de categoría -->
+                    <div class="category-badge">
+                        {{ product.category || 'General' }}
+                    </div>
+                </div>
+
+                <!-- Contenido del producto -->
+                <div class="product-content">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description }}</p>
+
+                    <!-- Footer con precio y botón -->
+                    <div class="product-footer">
+                        <div class="price-container">
+                            <span class="product-price">${{ product.price }}</span>
+                            <span class="price-currency">MXN</span>
+                        </div>
+                        <button class="add-to-cart-btn">
+                            <i class="bi bi-cart-plus"></i>
+                            Agregar
+                        </button>
+                    </div>
+
+                    <!-- Alertas de stock -->
+                    @if (product.stock < 5 && product.stock> 0) {
+                        <div class="stock-warning">
+                            ⚡ ¡Solo quedan {{ product.stock }}!
+                        </div>
+                        }
+                        @if (product.stock === 0) {
+                        <div class="stock-out">
+                            😔 Agotado
+                        </div>
+                        }
+                </div>
+            </div>
+            }
+        </div>
+
+        <!-- Estado vacío -->
+        @if (products.length === 0) {
+        <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <p>No hay productos disponibles en este momento</p>
         </div>
         }
     </div>

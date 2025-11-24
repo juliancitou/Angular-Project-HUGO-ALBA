@@ -1,0 +1,127 @@
+<div class="admin-dashboard">
+    <!-- HEADER IDÉNTICO AL PRINCIPAL -->
+    <header class="admin-custom-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Logo + Nombre -->
+                <div class="col-md-6">
+                    <div class="admin-brand-container">
+                        <div class="admin-logo-placeholder">
+                            <img src="assets/logo-empresa-encanto.png" alt="Logo Encanto" class="admin-logo-image">
+                        </div>
+                        <h1 class="admin-brand-name">Encanto</h1>
+                    </div>
+                </div>
+
+                <!-- Bienvenida + Botones derecha -->
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center justify-content-end gap-3 admin-header-buttons">
+                        <span class="admin-welcome-text">
+                            Bienvenido, <strong>Administrador</strong>
+                        </span>
+
+                        <a routerLink="/" class="btn btn-admin-home">
+                            <i class="bi bi-house me-2"></i>
+                            Volver al Inicio
+                        </a>
+
+                        <button (click)="logout()" class="btn btn-admin-logout">
+                            <i class="bi bi-box-arrow-right me-2"></i>
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="admin-main-content">
+        <div class="container">
+            <!-- Título + Descargas + Agregar Admin -->
+            <!-- Título + Descargas + Agregar Admin + BUSCADOR + BOTÓN NUEVO PRODUCTO -->
+            <div class="mb-5">
+                <!-- Fila superior: Título + Descargas + Agregar Admin -->
+                <div class="row align-items-center mb-4 action-buttons">
+                    <div class="col-md-8">
+                        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-4">
+                            <h2 class="page-title">Gestión de Productos</h2>
+                            <div class="download-section">
+                                <span class="download-text">Descargue para ver:</span>
+                                <button (click)="exportToExcel()" class="btn btn-excel">
+                                    Excel
+                                </button>
+                                <button (click)="exportToPDF()" class="btn btn-pdf">
+                                    PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 text-md-end">
+                        <button routerLink="/admin/create-admin" class="btn btn-add-admin">
+                            Agregar Administrador
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BARRA DE BÚSQUEDA -->
+                <div class="row justify-content-center mb-4">
+                    <div class="col-12 col-lg-8">
+                        <div class="search-container">
+                            <input type="text" class="form-control search-input"
+                                placeholder="Buscar producto por nombre o descripción..." [(ngModel)]="searchTerm"
+                                (input)="filterProducts()">
+                            <i class="bi bi-search search-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTÓN AGREGAR PRODUCTO NUEVO -->
+                <div class="row justify-content-center mb-5">
+                    <div class="col-12 col-lg-8 text-center">
+                        <!-- Botón que lleva al formulario de crear producto -->
+                        <button routerLink="/admin/create-product" class="btn btn-create-product">
+                            + Agregar Producto Nuevo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de productos -->
+            <div class="products-list">
+                <div *ngFor="let product of filteredProducts" class="product-card">
+                    <!-- Imagen pequeña -->
+                    <img [src]="getFirstImage(product)" alt="{{product.name}}" class="product-image">
+
+                    <!-- Info del producto -->
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <p class="product-description">{{ product.description }}</p>
+                        <p class="product-price">${{ product.price }}</p>
+                    </div>
+
+                    <!-- Botones Editar / Eliminar -->
+                    <div class="product-actions">
+                        <button [routerLink]="['/admin/edit-product', product.id]" class="btn btn-edit">
+                            Editar
+                        </button>
+                        <button (click)="deleteProduct(product.id!)" class="btn btn-delete">
+                            <i class="bi bi-trash me-2"></i>
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Si no hay productos -->
+            <div *ngIf="filteredProducts.length === 0" class="empty-state">
+                <i class="bi bi-inbox display-4 d-block mb-3"></i>
+                No hay productos disponibles
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <app-footer></app-footer>
+</div>

@@ -10,33 +10,39 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
+    // AÑADE 'category_id' AQUÍ
     protected $fillable = [
         'name',
-        'description', 
+        'description',
         'price',
-        'category',
+        'category',      // lo mantienes por compatibilidad
+        'category_id',   // ← ESTE ES EL QUE FALTABA
         'stock',
         'images',
         'is_available'
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'stock' => 'integer',
+        'price'        => 'decimal:2',
+        'stock'        => 'integer',
         'is_available' => 'boolean',
-        'images' => 'array' // PostgreSQL maneja JSON nativamente
+        'images'       => 'array'
     ];
 
-    // Scope para productos disponibles
     public function scopeAvailable($query)
     {
         return $query->where('is_available', true)
-                    ->where('stock', '>', 0);
+            ->where('stock', '>', 0);
     }
 
-    // Scope para búsqueda por categoría
     public function scopeByCategory($query, $category)
     {
         return $query->where('category', $category);
+    }
+
+    // Relación con categoría (opcional pero recomendado)
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }
