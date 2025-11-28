@@ -1,15 +1,30 @@
 // src/app/models/product.model.ts
+export interface Category {
+    id: number;
+    name: string;
+    description?: string;
+    image?: string;
+    is_active: boolean;
+    created_at?: string;
+    updated_at?: string;
+}
+
+// ✅ TIPO FLEXIBLE: string | objeto
+export type CategoryType = string | Category | null;
+
 export interface Product {
-    id?: number;
+    id: number;
     name: string;
     description: string;
     price: number;
-    category: string;
-    category_id?: number;
+    category: CategoryType;        // ✅ FLEXIBLE
+    category_id: number | null;
     stock: number;
     is_available: boolean;
-    images: string[];           // ← ¡¡ESTO ES CLAVE!! (JSONB en Laravel)
+    images: string[] | null;
     slug?: string;
+    likes_count: number;
     created_at?: string;
     updated_at?: string;
+    deleted_at?: string | null;
 }

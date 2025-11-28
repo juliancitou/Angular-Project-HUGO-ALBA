@@ -1,4 +1,5 @@
 <app-header></app-header>
+
 <div class="about-page">
 
     <!-- Hero Section -->
@@ -9,7 +10,7 @@
                     <h1 class="hero-title">Nuestra Historia</h1>
                     <p class="hero-description">
                         En <strong>Encanto</strong>, convertimos momentos especiales en recuerdos dulces e inolvidables.
-                        Desde 2015, nos dedicamos a crear pasteles y postres artesanales con los mejores ingredientes
+                        Desde 1996, nos dedicamos a crear pasteles y postres artesanales con los mejores ingredientes
                         y mucho amor.
                     </p>
                 </div>
@@ -54,15 +55,16 @@
         </div>
     </section>
 
-    <!-- Equipo -->
+    <!-- EQUIPO (AQUÍ ESTÁ EL CAMBIO) -->
     <section class="team-section">
         <div class="container">
             <h2 class="section-title">Nuestro Equipo</h2>
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4" *ngFor="let member of teamMembers">
                     <div class="team-card">
-                        <div class="member-avatar">
-                            {{ member.name.charAt(0) }}
+                        <!-- CONTENEDOR CIRCULAR CON EFECTO HOVER -->
+                        <div class="member-avatar-img">
+                            <img [src]="member.image" [alt]="member.name" class="chef-image">
                         </div>
                         <h4 class="member-name">{{ member.name }}</h4>
                         <p class="member-role">{{ member.role }}</p>

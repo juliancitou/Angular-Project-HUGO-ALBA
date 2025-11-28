@@ -135,8 +135,8 @@ export class AdminDashboardComponent implements OnInit {
     formData.append('name', this.currentProduct.name);
     formData.append('description', this.currentProduct.description || '');
     formData.append('price', this.currentProduct.price.toString());
-    formData.append('category', this.currentProduct.category || '');
-    formData.append('stock', this.currentProduct.stock?.toString() || '0');
+    // Solo enviar category_id al backend
+    formData.append('category_id', this.currentProduct.category_id?.toString() || ''); formData.append('stock', this.currentProduct.stock?.toString() || '0');
     formData.append('is_available', this.currentProduct.is_available ? '1' : '0');
     if (this.imageFile) {
       formData.append('images[]', this.imageFile);
@@ -199,7 +199,7 @@ export class AdminDashboardComponent implements OnInit {
       Nombre: p.name,
       Descripción: p.description,
       Precio: p.price,
-      Categoría: p.category || 'Sin categoría',
+      Categoría: this.getCategoryName(p),  // ✅ CAMBIADO
       Stock: p.stock,
       Disponible: p.is_available ? 'Sí' : 'No'
     }));
@@ -222,7 +222,7 @@ export class AdminDashboardComponent implements OnInit {
       p.name,
       p.description || '-',
       `$${p.price}`,
-      p.category || 'Sin categoría',
+      this.getCategoryName(p),  // ✅ CAMBIADO
       p.stock.toString(),
       p.is_available ? 'Sí' : 'No'
     ]);
@@ -243,5 +243,16 @@ export class AdminDashboardComponent implements OnInit {
       next: () => window.location.href = '/',
       error: () => window.location.href = '/'
     });
+  }
+
+  // ✅ MÉTODO NUEVO: AGREGAR ANTES DEL ÚLTIMO }
+  getCategoryName(product: any): string {
+    if (!product.category) return 'Sin categoría';
+
+    if (product.category && typeof product.category === 'object') {
+      return product.category.name || 'Sin categoría';
+    }
+
+    return product.category.toString();
   }
 }

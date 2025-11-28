@@ -1,0 +1,75 @@
+<div class="product-detail-page">
+    <!-- Header fijo - Mismo diseño que los demás -->
+    <header class="detail-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand-section">
+                    <div class="logo-placeholder">
+                        <img src="assets/logo-empresa-encanto.png" alt="Logo Encanto" class="logo-image">
+                    </div>
+                    <h1 class="brand-name">Encanto</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-back" (click)="goHome()">
+                        <i class="bi bi-house me-2"></i>
+                        Inicio
+                    </button>
+                    <button class="btn-logout" (click)="logout()" *ngIf="authService.isLoggedIn()">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        Cerrar sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading -->
+    <div class="loading-container" *ngIf="isLoading">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Cargando producto...</p>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="product-detail-container" *ngIf="!isLoading && product">
+        <div class="product-gallery">
+            <img [src]="getFirstImage(product.images)" [alt]="product.name" class="main-image">
+        </div>
+
+        <div class="product-info">
+            <div class="category-badge-detail">
+                {{ product.category }}
+            </div>
+
+            <h1 class="product-title">{{ product.name }}</h1>
+            <p class="product-description">{{ product.description }}</p>
+
+            <div class="price-like-row">
+                <div class="price-big">
+                    ${{ product.price }} <span class="currency">MXN</span>
+                </div>
+
+                <button class="like-btn" (click)="toggleLike()" [class.liked]="isLiked">
+                    <i class="bi" [class.bi-heart]="!isLiked" [class.bi-heart-fill]="isLiked"></i>
+                    <span class="count">{{ likesCount }}</span>
+                </button>
+            </div>
+
+            <button class="add-to-cart-big" [disabled]="product.stock === 0">
+                <i class="bi bi-cart-plus me-2"></i>
+                Agregar al carrito
+            </button>
+
+            <div class="stock-info available" *ngIf="product.stock > 0">
+                <i class="bi bi-check-circle me-2"></i>
+                Disponibles: {{ product.stock }}
+            </div>
+            <div class="stock-info out" *ngIf="product.stock === 0">
+                <i class="bi bi-x-circle me-2"></i>
+                Producto agotado
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <app-footer></app-footer>
+</div>

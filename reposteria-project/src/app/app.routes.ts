@@ -4,11 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login';
 import { RegisterComponent } from './components/register/register.component';
 import { AdminDashboardComponent } from './admin/admin-dashboard.component';
-
-// COMPONENTE NUEVO: Crear Producto
 import { CreateProductComponent } from './admin/create-product/create-product';
-
-// Guards
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 
@@ -17,39 +13,59 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
 
+    // RUTA PÚBLICA DEL DETALLE DEL PRODUCTO
+    {
+        path: 'producto/:id',
+        loadComponent: () => import('./components/product-detail/product-detail.component')
+            .then(m => m.ProductDetailComponent),
+        title: 'Detalle del Producto'
+    },
+
+
+    // RUTA PÚBLICA DE TODOS LOS PRODUCTOS
+    {
+        path: 'productos',
+        loadComponent: () => import('./components/all-products/all-products.component')
+            .then(m => m.AllProductsComponent),
+        title: 'Todos los Productos - Encanto Repostería'
+    },
+
+    // AÑADE ESTAS DOS RUTAS (¡AHORA SÍ!)
+    {
+        path: 'productos',
+        loadComponent: () => import('./components/product-list/product-list.component')
+            .then(m => m.ProductListComponent),
+        title: 'Nuestros Productos - Encanto Repostería'
+    },
+    {
+        path: 'acerca',
+        loadComponent: () => import('./components/about/about.component')
+            .then(m => m.AboutComponent),
+        title: 'Acerca de - Encanto Repostería'
+    },
+
+
     // ==================== ÁREA DE ADMINISTRACIÓN ====================
     {
         path: 'admin',
-        canActivate: [AuthGuard, AdminGuard], // Solo usuarios logueados + rol admin
+        canActivate: [AuthGuard, AdminGuard],
         children: [
-            // Dashboard principal (productos, pedidos, etc.)
-            {
-                path: '',
-                component: AdminDashboardComponent
-            },
-
-            // Crear nuevo producto → componente independiente
+            { path: '', component: AdminDashboardComponent },
             {
                 path: 'create-product',
                 loadComponent: () => import('./admin/create-product/create-product')
                     .then(m => m.CreateProductComponent),
                 title: 'Crear Producto - Encanto Admin'
             },
-
-            // Opcional: también puedes tener editar producto
             {
                 path: 'edit-product/:id',
                 loadComponent: () => import('./admin/edit-product/edit-product')
                     .then(m => m.EditProduct),
                 title: 'Editar Producto - Encanto Admin'
-            },
-
-            // Si más adelante quieres separar órdenes, crear admin, etc.
-            // { path: 'orders', component: OrdersComponent },
-            // { path: 'create-admin', component: CreateAdminComponent },
+            }
+            // YA NO VA AQUÍ LA RUTA producto/:id
         ]
     },
 
-    // Ruta por defecto y wildcard
     { path: '**', redirectTo: '' }
 ];

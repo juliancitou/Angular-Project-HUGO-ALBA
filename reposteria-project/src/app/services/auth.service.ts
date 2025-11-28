@@ -62,7 +62,7 @@ export class AuthService {
     getUser(): any {
         const user = localStorage.getItem('user');
         return user ? JSON.parse(user) : null;
-    }
+    }   
 
     getToken(): string | null {
         return localStorage.getItem('token');

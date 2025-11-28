@@ -77,4 +77,32 @@ export class ProductService {
             })
         });
     }
+
+    toggleLike(productId: number): Observable<any> {
+        const token = this.authService.getToken();
+        return this.http.post(`${API_URL}/products/${productId}/like`, {}, {
+            headers: new HttpHeaders({
+                'Authorization': `Bearer ${token}`
+            })
+        });
+    }
+
+    // product.service.ts
+    getProductsAll(): Observable<Product[]> {
+        return this.http.get<Product[]>(`${API_URL}/products`).pipe(
+            catchError(err => {
+                console.error('Error cargando todos los productos:', err);
+                return throwError(() => err);
+            })
+        );
+    }
+
+    getFeaturedProducts(): Observable<Product[]> {
+        return this.http.get<Product[]>(`${API_URL}/products?featured=true`).pipe(
+            catchError(err => {
+                console.error('Error cargando productos destacados:', err);
+                return throwError(() => err);
+            })
+        );
+    }
 }

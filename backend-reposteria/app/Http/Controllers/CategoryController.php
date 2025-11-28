@@ -9,6 +9,10 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        return response()->json(Category::where('is_active', true)->get());
+        $categories = Category::where('is_active', true)
+            ->select('id', 'name', 'description', 'image', 'is_active')
+            ->get();
+
+        return response()->json($categories);
     }
 }

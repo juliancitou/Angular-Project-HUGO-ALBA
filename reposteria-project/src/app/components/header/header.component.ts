@@ -18,7 +18,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   menuItems = [
     { name: 'Inicio', path: '/', icon: 'bi bi-house-door' },
-    { name: 'Productos', path: '/productos', icon: 'bi bi-basket' },
+    { name: 'Todos los Productos', path: '/productos', icon: 'bi bi-grid-3x3-gap' }, // ← CAMBIO
+    { name: 'Destacados', path: '/destacados', icon: 'bi bi-star-fill' },           // ← NUEVO
     { name: 'Acerca de', path: '/acerca', icon: 'bi bi-info-circle' },
   ];
 

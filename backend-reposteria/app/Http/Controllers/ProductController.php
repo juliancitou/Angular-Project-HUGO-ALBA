@@ -13,10 +13,14 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->available()->get();
+        $products = Product::with('category')
+            ->available()
+            ->get();
+
         return response()->json($products);
     }
 
+    // app/Http/Controllers/ProductController.php
     public function show($id)
     {
         $product = Product::with('category')->find($id);
@@ -182,5 +186,31 @@ class ProductController extends Controller
                 'error'   => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function toggleLike($id)
+    {
+        $product = Product::with('category')->findOrFail($id);
+        $user = auth('sanctum')->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'No autorizado'], 401);
+        }
+
+        $liked = $product->likes()->where('user_id', $user->id)->exists();
+
+        if ($liked) {
+            $product->likes()->detach($user->id);
+            $action = 'removed';
+        } else {
+            $product->likes()->attach($user->id);
+            $action = 'added';
+        }
+
+        return response()->json([
+            'likes_count' => $product->likes()->count(),
+            'liked' => !$liked,
+            'action' => $action
+        ]);
     }
 }

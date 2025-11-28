@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->role === 'user';
     }
+
+    public function likedProducts()
+    {
+        return $this->belongsToMany(Product::class, 'product_likes');
+    }
 }
