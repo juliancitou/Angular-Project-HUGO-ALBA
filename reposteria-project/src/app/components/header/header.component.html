@@ -27,6 +27,16 @@
                     Panel Admin
                 </a>
 
+                <!-- Agregar esto donde quieras el contador del carrito -->
+                <a routerLink="/carrito" class="nav-link cart-link position-relative">
+                    <i class="bi bi-cart3">
+                        🛒
+                    </i>
+                    <span class="cart-count badge bg-danger rounded-pill">
+                        {{ cart.totalItems }}
+                    </span>
+                </a>
+
                 <!-- MENÚ DESPLEGABLE (Inicio, Productos, Acerca de) -->
                 <div class="dropdown">
                     <button class="btn btn-menu dropdown-toggle" type="button" data-bs-toggle="dropdown">

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service'; // ✅ AGREGADO
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { Product } from '../../models/product.model';
@@ -39,7 +40,10 @@ export class AllProductsComponent implements OnInit, OnDestroy {
   sortBy = 'name';
   private destroy$ = new Subject<void>();
 
-  constructor(private productService: ProductService) { }
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService // ✅ AGREGADO
+  ) { }
 
   ngOnInit(): void {
     this.loadProducts();
@@ -136,16 +140,23 @@ export class AllProductsComponent implements OnInit, OnDestroy {
     this.applyFilters();
   }
 
-  // ✅ MÉTODO NUEVO: OBTENER NOMBRE DE CATEGORÍA
+  // ✅ MÉTODO EXISTENTE: OBTENER NOMBRE DE CATEGORÍA
   getCategoryName(product: any): string {
     if (!product.category) return 'Sin categoría';
-
-    // Si es objeto (viene de la API con with('category'))
     if (product.category && typeof product.category === 'object') {
       return product.category.name || 'Sin categoría';
     }
-
-    // Si es string (nombre directo)
     return product.category.toString();
   }
+
+  // ✅ MÉTODO NUEVO: AGREGAR AL CARRITO
+  addToCart(product: Product): void {
+    if (product.is_available && product.stock > 0) {
+      this.cartService.addToCart(product, 1);
+      alert(`¡${product.name} agregado al carrito! 🎉`);
+    } else {
+      alert('Este producto no está disponible en este momento');
+    }
+  }
+
 }

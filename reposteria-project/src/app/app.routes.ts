@@ -7,6 +7,7 @@ import { AdminDashboardComponent } from './admin/admin-dashboard.component';
 import { CreateProductComponent } from './admin/create-product/create-product';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { CartComponent } from './components/cart/cart.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -43,6 +44,9 @@ export const routes: Routes = [
             .then(m => m.AboutComponent),
         title: 'Acerca de - Encanto Repostería'
     },
+
+    //RUTA AL CARRITO DE COMPRAS
+    { path: 'carrito', component: CartComponent },
 
 
     // ==================== ÁREA DE ADMINISTRACIÓN ====================

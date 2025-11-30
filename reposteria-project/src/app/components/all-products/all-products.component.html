@@ -1,129 +1,161 @@
 <app-header></app-header>
 
 <div class="all-products-page">
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION MEJORADO -->
     <section class="products-hero">
+        <div class="hero-overlay"></div>
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
+            <div class="hero-content">
+                <div class="hero-text">
                     <h1 class="hero-title">Nuestros Productos</h1>
                     <p class="hero-subtitle">
                         Descubre nuestra deliciosa selección de pasteles, cupcakes y postres artesanales
                     </p>
                 </div>
-                <div class="col-lg-4 text-end">
-                    <span class="products-count">
+                <div class="hero-counter">
+                    <div class="counter-badge">
                         <i class="bi bi-grid-3x3-gap"></i>
-                        {{ filteredProductsCount }} productos disponibles
-                    </span>
+                        <span class="count-number">{{ filteredProductsCount }}</span>
+                        <span class="count-text">productos disponibles</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FILTROS Y BÚSQUEDA -->
+    <!-- FILTROS Y BÚSQUEDA MEJORADO -->
     <section class="filters-section">
         <div class="container">
-            <div class="row g-4 align-items-center">
-                <!-- BÚSQUEDA -->
-                <div class="col-lg-4 col-md-6">
+            <div class="filters-grid">
+                <!-- BÚSQUEDA MEJORADA -->
+                <div class="filter-group">
                     <div class="search-container">
                         <i class="bi bi-search search-icon"></i>
-                        <input type="text" class="form-control search-input"
-                            placeholder="Buscar por nombre o descripción..." [(ngModel)]="searchTerm"
-                            (input)="onSearch()">
+                        <input type="text" class="search-input" placeholder="Buscar por nombre o descripción..."
+                            [(ngModel)]="searchTerm" (input)="onSearch()">
+                        <div class="search-decoration"></div>
                     </div>
                 </div>
 
-                <!-- FILTRO POR CATEGORÍA -->
-                <div class="col-lg-3 col-md-6">
-                    <select class="form-select filter-select" [(ngModel)]="selectedCategory"
-                        (change)="onCategoryChange()">
-                        <option value="">Todas las categorías</option>
-                        <option *ngFor="let category of categories" [value]="category.id">
-                            {{ category.name }}
-                        </option>
-                    </select>
+                <!-- FILTRO POR CATEGORÍA MEJORADO -->
+                <div class="filter-group">
+                    <div class="select-container">
+                        <i class="bi bi-tag-fill select-icon"></i>
+                        <select class="filter-select" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+                            <option value="">Todas las categorías</option>
+                            <option *ngFor="let category of categories" [value]="category.id">
+                                {{ category.name }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- ORDENAMIENTO -->
-                <div class="col-lg-3 col-md-6">
-                    <select class="form-select filter-select" [(ngModel)]="sortBy" (change)="onSortChange()">
-                        <option value="name">Ordenar por nombre</option>
-                        <option value="price_asc">Precio: menor a mayor</option>
-                        <option value="price_desc">Precio: mayor a menor</option>
-                        <option value="newest">Más recientes</option>
-                    </select>
+                <!-- ORDENAMIENTO MEJORADO -->
+                <div class="filter-group">
+                    <div class="select-container">
+                        <i class="bi bi-sort-down select-icon"></i>
+                        <select class="filter-select" [(ngModel)]="sortBy" (change)="onSortChange()">
+                            <option value="name">Ordenar por nombre</option>
+                            <option value="price_asc">Precio: menor a mayor</option>
+                            <option value="price_desc">Precio: mayor a menor</option>
+                            <option value="newest">Más recientes</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- BOTÓN LIMPIAR FILTROS -->
-                <div class="col-lg-2 col-md-6">
-                    <button class="btn btn-outline-danger w-100 clear-filters-btn" (click)="clearFilters()">
+                <!-- BOTÓN LIMPIAR FILTROS MEJORADO -->
+                <div class="filter-group">
+                    <button class="clear-filters-btn" (click)="clearFilters()">
                         <i class="bi bi-arrow-clockwise"></i>
-                        Limpiar
+                        <span>Limpiar Filtros</span>
+                        <div class="btn-overlay"></div>
                     </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PRODUCTOS -->
+    <!-- PRODUCTOS MEJORADO -->
     <section class="products-section">
         <div class="container">
-            <!-- Loading -->
-            <div *ngIf="loading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Cargando productos...</span>
+            <!-- Loading mejorado -->
+            <div *ngIf="loading" class="loading-container">
+                <div class="loading-spinner">
+                    <div class="spinner-circle"></div>
+                    <div class="spinner-text">Cargando productos deliciosos...</div>
                 </div>
-                <p class="mt-3">Cargando productos deliciosos...</p>
             </div>
 
-            <!-- No results -->
-            <div *ngIf="!loading && filteredProductsCount === 0" class="text-center py-5">
-                <i class="bi bi-search display-1 text-muted"></i>
-                <h3 class="mt-3">No se encontraron productos</h3>
-                <p class="text-muted">Intenta con otros términos de búsqueda</p>
+            <!-- No results mejorado -->
+            <div *ngIf="!loading && filteredProductsCount === 0" class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-search-heart"></i>
+                </div>
+                <h3 class="empty-title">No se encontraron productos</h3>
+                <p class="empty-subtitle">Intenta con otros términos de búsqueda o ajusta los filtros</p>
+                <button class="empty-action-btn" (click)="clearFilters()">
+                    Limpiar filtros
+                </button>
             </div>
 
-            <!-- Grid de productos -->
-            <!-- Grid de productos -->
-            <div *ngIf="!loading && filteredProductsCount > 0" class="row g-4">
-                <div class="col-lg-3 col-md-6" *ngFor="let product of filteredProducts">
-                    <div class="product-card h-100">
+            <!-- Grid de productos mejorado -->
+            <div *ngIf="!loading && filteredProductsCount > 0" class="products-grid">
+                <div class="product-card-wrapper" *ngFor="let product of filteredProducts">
+                    <div class="product-card" [class.out-of-stock]="!product.is_available">
                         <div class="product-image-container">
-                            <!-- ✅ IMAGEN CORREGIDA -->
                             <img [src]="product.images && product.images.length > 0 
-                        ? ('http://localhost:8000/storage/' + product.images[0]) 
-                        : 'assets/no-image.png'" [alt]="product.name" class="product-image" loading="lazy">
-                            <div class="product-badge" *ngIf="!product.is_available">
-                                <span class="badge bg-danger">Sin Stock</span>
+                                    ? ('http://localhost:8000/storage/' + product.images[0]) 
+                                    : 'assets/no-image.png'" [alt]="product.name" class="product-image" loading="lazy">
+
+                            <!-- Badge de stock -->
+                            <div class="stock-badge" *ngIf="!product.is_available">
+                                <span class="badge-text">Agotado</span>
                             </div>
+
+                            <!-- Badge de likes mejorado -->
                             <div class="likes-badge">
                                 <i class="bi bi-heart-fill"></i>
-                                {{ product.likes_count || 0 }}
+                                <span class="likes-count">{{ product.likes_count || 0 }}</span>
                             </div>
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-name">{{ product.name }}</h5>
 
-                            <!-- ✅ SOLUCIÓN DEFINITIVA -->
-                            <p class="product-category text-muted">
+                            <!-- Overlay de hover -->
+                            <div class="image-overlay"></div>
+                        </div>
+
+                        <div class="product-content">
+                            <h3 class="product-name">{{ product.name }}</h3>
+
+                            <div class="product-category">
+                                <i class="bi bi-tag"></i>
                                 {{ getCategoryName(product) }}
-                            </p>
+                            </div>
 
-                            <p class="product-price">${{ product.price | number:'1.2-2' }}</p>
-                            <p class="product-description">{{ product.description }}</p>
+                            <div class="product-description">
+                                {{ product.description }}
+                            </div>
 
-                            <div class="product-actions">
-                                <button class="btn btn-primary w-100" [disabled]="!product.is_available">
-                                    <i class="bi bi-cart-plus"></i>
-                                    Agregar al carrito
-                                </button>
-                                <a routerLink="/producto/{{ product.id }}" class="btn btn-outline-primary w-100 mt-2">
-                                    Ver detalle
-                                </a>
+                            <div class="product-footer">
+                                <div class="price-container">
+                                    <span class="product-price">${{ product.price | number:'1.2-2' }}</span>
+                                    <span class="price-currency">MXN</span>
+                                </div>
+
+                                <div class="product-actions">
+                                    <button class="btn btn-primary w-100" [disabled]="!product.is_available"
+                                        (click)="addToCart(product)">
+                                        <i class="bi bi-cart-plus"></i>
+                                        Agregar al carrito
+                                    </button>
+                                    <a [routerLink]="['/producto', product.id]" class="view-detail-btn">
+                                        <i class="bi bi-eye"></i>
+                                        Ver detalle
+                                    </a>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Efecto de brillo -->
+                        <div class="card-shine"></div>
                     </div>
                 </div>
             </div>

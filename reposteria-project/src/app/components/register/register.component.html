@@ -1,122 +1,237 @@
 <div class="register-page">
-    <!-- Header similar al login -->
-    <header class="custom-header">
-        <nav class="navbar">
-            <div class="container">
-                <!-- Logo y Nombre -->
-                <a class="navbar-brand" routerLink="/">
-                    <div class="brand-container">
-                        <div class="logo-placeholder">
-                            <img src="assets/logo-empresa-encanto.png" alt="Logo Encanto" class="logo-image">
-                        </div>
-                        <span class="brand-name">Encanto</span>
+    <!-- Header mejorado -->
+    <header class="register-header">
+        <div class="header-overlay"></div>
+        <div class="container">
+            <div class="header-content">
+                <div class="brand-section">
+                    <div class="logo-container">
+                        <img src="assets/logo-empresa-encanto.png" alt="Logo Encanto" class="logo-image">
+                        <div class="logo-shine"></div>
                     </div>
-                </a>
-
-                <!-- Botón para volver atrás -->
-                <button class="btn btn-back" routerLink="/login">
-                    <i class="bi bi-arrow-left me-2"></i>
+                    <h1 class="brand-name">Encanto</h1>
+                </div>
+                <button class="btn-back-primary" routerLink="/login">
+                    <i class="bi bi-arrow-left-circle-fill me-2"></i>
                     Volver al Login
+                    <div class="btn-hover-effect"></div>
                 </button>
             </div>
-        </nav>
+        </div>
     </header>
 
-    <!-- Contenido del registro -->
+    <!-- Contenido del registro mejorado -->
     <div class="register-container">
-        <div class="register-card">
-            <!-- Encabezado del registro -->
-            <div class="register-header">
-                <h2>Crear Cuenta</h2>
-                <p>Únete a Encanto Repostería y descubre un mundo de sabores</p>
+        <div class="register-background">
+            <div class="floating-elements">
+                <div class="floating-element element-1">🎂</div>
+                <div class="floating-element element-2">🍰</div>
+                <div class="floating-element element-3">🧁</div>
+                <div class="floating-element element-4">🍪</div>
+                <div class="floating-element element-5">🥧</div>
+                <div class="floating-element element-6">🍩</div>
             </div>
+        </div>
 
-            <form (ngSubmit)="onRegister()" #registerForm="ngForm">
-                <!-- Nombre completo -->
-                <div class="form-group">
-                    <label for="name">Nombre Completo *</label>
-                    <input type="text" id="name" name="name" [(ngModel)]="userData.name" required
-                        placeholder="Tu nombre completo" minlength="2">
+        <div class="register-card-wrapper">
+            <div class="register-card">
+                <!-- Efecto de brillo -->
+                <div class="card-shine"></div>
+
+                <!-- Encabezado del registro mejorado -->
+                <div class="register-card-header">
+                    <div class="header-icon">
+                        <i class="bi bi-person-plus-fill"></i>
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h2 class="register-title">Crear Cuenta</h2>
+                    <p class="register-subtitle">Únete a Encanto Repostería y descubre un mundo de sabores</p>
                 </div>
 
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" [(ngModel)]="userData.email" required email
-                        placeholder="tu@email.com">
-                </div>
+                <form (ngSubmit)="onRegister()" #registerForm="ngForm" class="register-form">
+                    <!-- Nombre completo -->
+                    <div class="form-group" [class.error]="nameInvalid">
+                        <label for="name" class="form-label">
+                            <i class="bi bi-person-fill"></i>
+                            Nombre Completo *
+                        </label>
+                        <div class="input-container">
+                            <input type="text" id="name" name="name" [(ngModel)]="userData.name" required
+                                placeholder="Tu nombre completo" minlength="2" class="form-input"
+                                (blur)="validateName()" (input)="onNameInput()" (focus)="clearNameError()">
+                            <div class="input-decoration"></div>
+                        </div>
+                        <div class="error-icon" *ngIf="nameInvalid">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                        </div>
+                    </div>
 
-                <!-- Teléfono -->
-                <div class="form-group">
-                    <label for="phone">Teléfono</label>
-                    <input type="tel" id="phone" name="phone" [(ngModel)]="userData.phone"
-                        placeholder="+52 123 456 7890">
-                </div>
+                    <!-- Email -->
+                    <div class="form-group" [class.error]="emailInvalid">
+                        <label for="email" class="form-label">
+                            <i class="bi bi-envelope-fill"></i>
+                            Correo Electrónico *
+                        </label>
+                        <div class="input-container">
+                            <input type="email" id="email" name="email" [(ngModel)]="userData.email" required email
+                                placeholder="tu@email.com" class="form-input" (blur)="validateEmail()"
+                                (input)="onEmailInput()" (focus)="clearEmailError()">
+                            <div class="input-decoration"></div>
+                        </div>
+                        <div class="error-icon" *ngIf="emailInvalid">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                        </div>
+                    </div>
 
-                <!-- Dirección -->
-                <div class="form-group">
-                    <label for="address">Dirección</label>
-                    <textarea id="address" name="address" [(ngModel)]="userData.address" rows="3"
-                        placeholder="Tu dirección completa"></textarea>
-                </div>
+                    <!-- Teléfono -->
+                    <div class="form-group" [class.error]="phoneInvalid">
+                        <label for="phone" class="form-label">
+                            <i class="bi bi-telephone-fill"></i>
+                            Teléfono
+                        </label>
+                        <div class="input-container">
+                            <input type="tel" id="phone" name="phone" [(ngModel)]="userData.phone"
+                                placeholder="+52 123 456 7890" class="form-input" (blur)="validatePhone()"
+                                (input)="onPhoneInput()">
+                            <div class="input-decoration"></div>
+                        </div>
+                        <div class="error-icon" *ngIf="phoneInvalid">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                        </div>
+                    </div>
 
-                <!-- Contraseña -->
-                <div class="form-group password-group">
-                    <label for="password">Contraseña *</label>
-                    <div class="password-input-container">
-                        <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
-                            [(ngModel)]="userData.password" required placeholder="••••••••" minlength="8"
-                            class="password-input">
-                        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
-                            <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                    <!-- Dirección -->
+                    <div class="form-group" [class.error]="addressInvalid">
+                        <label for="address" class="form-label">
+                            <i class="bi bi-geo-alt-fill"></i>
+                            Dirección
+                        </label>
+                        <div class="input-container">
+                            <textarea id="address" name="address" [(ngModel)]="userData.address" rows="3"
+                                placeholder="Tu dirección completa" class="form-input textarea-input"
+                                (blur)="validateAddress()" (input)="onAddressInput()"></textarea>
+                            <div class="input-decoration"></div>
+                        </div>
+                        <div class="error-icon" *ngIf="addressInvalid">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                        </div>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="form-group password-group" [class.error]="passwordInvalid">
+                        <label for="password" class="form-label">
+                            <i class="bi bi-lock-fill"></i>
+                            Contraseña *
+                        </label>
+                        <div class="input-container">
+                            <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
+                                [(ngModel)]="userData.password" required placeholder="••••••••" minlength="8"
+                                class="form-input password-input" (blur)="validatePassword()"
+                                (input)="onPasswordInput()" (focus)="clearPasswordError()">
+                            <div class="input-decoration"></div>
+
+                            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                                <i class="bi" [class.bi-eye-fill]="!showPassword"
+                                    [class.bi-eye-slash-fill]="showPassword">👁️</i>
+                                <div class="toggle-effect"></div>
+                            </button>
+                        </div>
+                        <div class="error-icon" *ngIf="passwordInvalid">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                        </div>
+                        <small class="password-hint">Mínimo 8 caracteres</small>
+                    </div>
+
+                    <!-- Confirmar Contraseña -->
+                    <div class="form-group password-group" [class.error]="confirmPasswordInvalid">
+                        <label for="password_confirmation" class="form-label">
+                            <i class="bi bi-lock-fill"></i>
+                            Confirmar Contraseña *
+                        </label>
+                        <div class="input-container">
+                            <input [type]="showConfirmPassword ? 'text' : 'password'" id="password_confirmation"
+                                name="password_confirmation" [(ngModel)]="userData.password_confirmation" required
+                                placeholder="••••••••" minlength="8" class="form-input password-input"
+                                (blur)="validateConfirmPassword()" (input)="onConfirmPasswordInput()"
+                                (focus)="clearConfirmPasswordError()">
+                            <div class="input-decoration"></div>
+
+                            <button type="button" class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
+                                <i class="bi" [class.bi-eye-fill]="!showConfirmPassword"
+                                    [class.bi-eye-slash-fill]="showConfirmPassword">👁️</i>
+                                <div class="toggle-effect"></div>
+                            </button>
+                        </div>
+                        <div class="error-icon" *ngIf="confirmPasswordInvalid">
+                            <i class="bi bi-exclamation-circle-fill"></i>
+                        </div>
+                    </div>
+
+                    <!-- Botones de acción mejorados -->
+                    <div class="register-actions">
+                        <button type="submit" class="register-btn-primary" [disabled]="!isFormValid() || isLoading">
+                            <div class="btn-content">
+                                <span *ngIf="!isLoading" class="btn-text">
+                                    <i class="bi bi-person-plus-fill"></i>
+                                    Crear Cuenta
+                                </span>
+                                <span *ngIf="isLoading" class="btn-text">
+                                    <div class="loading-spinner-small"></div>
+                                    Creando Cuenta...
+                                </span>
+                            </div>
+                            <div class="btn-sparkle"></div>
+                        </button>
+
+                        <button type="button" class="btn-back-secondary" routerLink="/login">
+                            <i class="bi bi-arrow-left-circle"></i>
+                            Cancelar
+                            <div class="btn-hover-effect"></div>
                         </button>
                     </div>
-                    <small class="form-text">Mínimo 8 caracteres</small>
+
+                    <!-- Mensaje de error mejorado -->
+                    <div *ngIf="errorMessage" class="error-message-animated">
+                        <div class="error-icon-large">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                        </div>
+                        <div class="error-content">
+                            <h4>Error en el registro</h4>
+                            <p>{{ errorMessage }}</p>
+                        </div>
+                        <div class="error-pulse"></div>
+                    </div>
+
+                    <!-- Indicador de fortaleza de contraseña -->
+                    <div class="password-strength" *ngIf="userData.password && !passwordInvalid">
+                        <div class="strength-bar" [class]="getPasswordStrengthClass()">
+                            <div class="strength-fill" [style.width.%]="getPasswordStrength()"></div>
+                        </div>
+                        <div class="strength-text">
+                            Fortaleza: {{ getPasswordStrengthText() }}
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Enlaces mejorados -->
+                <div class="register-links">
+                    <p class="register-link-text">
+                        ¿Ya tienes una cuenta?
+                        <a routerLink="/login" class="register-link">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            Inicia Sesión aquí
+                            <div class="link-underline"></div>
+                        </a>
+                    </p>
                 </div>
 
-                <!-- Confirmar Contraseña -->
-                <div class="form-group password-group">
-                    <label for="password_confirmation">Confirmar Contraseña *</label>
-                    <div class="password-input-container">
-                        <input [type]="showConfirmPassword ? 'text' : 'password'" id="password_confirmation"
-                            name="password_confirmation" [(ngModel)]="userData.password_confirmation" required
-                            placeholder="••••••••" minlength="8" class="password-input">
-                        <button type="button" class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
-                            <i [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
-                        </button>
+                <!-- Decoración inferior -->
+                <div class="register-footer">
+                    <div class="security-badge">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Tus datos están protegidos</span>
                     </div>
                 </div>
-
-                <div class="register-actions">
-                    <button type="submit" class="register-btn" [disabled]="!registerForm.valid || isLoading">
-                        <span *ngIf="!isLoading">
-                            <i class="bi bi-person-plus me-2"></i>
-                            Crear Cuenta
-                        </span>
-                        <span *ngIf="isLoading">
-                            <i class="bi bi-arrow-repeat spinner me-2"></i>
-                            Creando cuenta...
-                        </span>
-                    </button>
-
-                    <button type="button" class="btn-back-secondary" routerLink="/login">
-                        <i class="bi bi-arrow-left me-2"></i>
-                        Cancelar
-                    </button>
-                </div>
-
-                <div *ngIf="errorMessage" class="error-message">
-                    <i class="bi bi-exclamation-triangle me-2"></i>
-                    {{ errorMessage }}
-                </div>
-            </form>
-
-            <div class="register-links">
-                <p>¿Ya tienes una cuenta?
-                    <a routerLink="/login" class="link-pastel">
-                        Inicia Sesión aquí
-                    </a>
-                </p>
             </div>
         </div>
     </div>

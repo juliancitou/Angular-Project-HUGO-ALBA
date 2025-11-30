@@ -107,4 +107,16 @@ export class ProductDetailComponent implements OnInit {
     }
     return 'assets/default-product.jpg';
   }
+
+  getCategoryName(product: any): string {
+    if (!product.category) return 'Sin categoría';
+
+    // Si es objeto (viene de la API con with('category'))
+    if (product.category && typeof product.category === 'object') {
+      return product.category.name || 'Sin categoría';
+    }
+
+    // Si es string (nombre directo)
+    return product.category.toString();
+  }
 }

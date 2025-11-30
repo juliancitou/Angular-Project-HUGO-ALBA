@@ -1,0 +1,200 @@
+<app-header></app-header>
+
+<div class="cart-page">
+    <!-- HEADER DE CARRITO MEJORADO -->
+    <section class="cart-hero">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="cart-title">
+                        <i class="bi bi-cart-fill"></i>
+                        Mi Carrito de Compras
+                    </h1>
+                    <p class="cart-subtitle">
+                        {{ cartItems.length }} {{ cartItems.length === 1 ? 'producto delicioso' : 'productos deliciosos'
+                        }} esperando por ti
+                    </p>
+                </div>
+                <div class="hero-actions" *ngIf="cartItems.length > 0">
+                    <button class="clear-cart-btn" (click)="clearCart()">
+                        <i class="bi bi-trash3-fill"></i>
+                        Vaciar Carrito
+                        <div class="btn-hover-effect"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARRITO VACÍO MEJORADO -->
+    <div class="container" *ngIf="cartItems.length === 0">
+        <div class="empty-cart-state">
+            <div class="empty-cart-icon">
+                <i class="bi bi-cart-x"></i>
+                <div class="empty-sparkles">
+                    <span>✨</span>
+                    <span>🎂</span>
+                    <span>🍰</span>
+                </div>
+            </div>
+            <h3 class="empty-title">¡Tu carrito está vacío!</h3>
+            <p class="empty-subtitle">Descubre nuestros deliciosos postres y llena tu carrito de felicidad</p>
+            <a routerLink="/productos" class="continue-shopping-btn">
+                <i class="bi bi-arrow-left"></i>
+                Explorar Productos Deliciosos
+                <div class="btn-sparkle"></div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ÍTEMS DEL CARRITO MEJORADO -->
+    <div class="container" *ngIf="cartItems.length > 0">
+        <div class="cart-layout">
+            <!-- LISTA DE PRODUCTOS MEJORADA -->
+            <div class="cart-items-section">
+                <div class="cart-items-header">
+                    <h3 class="items-title">Tus Productos Seleccionados</h3>
+                    <span class="items-count">{{ cartItems.length }} productos</span>
+                </div>
+
+                <div class="cart-items-list">
+                    <div class="cart-item-card" *ngFor="let item of cartItems; let i = index"
+                        [style.animation-delay]="i * 0.1 + 's'">
+                        <div class="item-content">
+                            <!-- IMAGEN MEJORADA -->
+                            <div class="item-image-container">
+                                <img [src]="getFirstImage(item)" [alt]="item.product_name" class="item-image">
+                                <div class="image-overlay"></div>
+                                <div class="item-badge">
+                                    <i class="bi bi-tag-fill"></i>
+                                </div>
+                            </div>
+
+                            <!-- DETALLES MEJORADOS -->
+                            <div class="item-details">
+                                <h4 class="item-name">{{ item.product_name }}</h4>
+                                <p class="item-category">{{ getCategoryName(item) }}</p>
+                                <div class="item-price-mobile">
+                                    <span class="price">${{ (item.price * item.quantity) | number:'1.2-2' }}</span>
+                                </div>
+                            </div>
+
+                            <!-- CONTROLES DE CANTIDAD MEJORADOS -->
+                            <div class="quantity-controls">
+                                <div class="quantity-header">
+                                    <span class="quantity-label">Cantidad</span>
+                                </div>
+                                <div class="quantity-buttons">
+                                    <button class="qty-btn decrease" (click)="updateQuantity(item, item.quantity - 1)"
+                                        [disabled]="item.quantity <= 1" [class.disabled]="item.quantity <= 1">
+                                        <i class="bi bi-dash-lg"></i>
+                                        <span class="btn-emoji">➖</span>
+                                    </button>
+
+                                    <div class="qty-display">
+                                        <span class="qty-number">{{ item.quantity }}</span>
+                                        <span class="qty-text">unidades</span>
+                                    </div>
+
+                                    <button class="qty-btn increase" (click)="updateQuantity(item, item.quantity + 1)">
+                                        <i class="bi bi-plus-lg"></i>
+                                        <span class="btn-emoji">➕</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- PRECIO Y ELIMINAR MEJORADOS -->
+                            <div class="item-actions">
+                                <div class="price-container">
+                                    <span class="price-label">Total:</span>
+                                    <span class="item-price">${{ (item.price * item.quantity) | number:'1.2-2' }}</span>
+                                    <span class="price-unit">c/u: ${{ item.price | number:'1.2-2' }}</span>
+                                </div>
+
+                                <button class="remove-item-btn" (click)="removeItem(item.id)">
+                                    <i class="bi bi-trash-fill"></i>
+                                    <span class="btn-text">Eliminar</span>
+                                    <span class="btn-emoji">🗑️</span>
+                                    <div class="btn-hover-effect"></div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- EFECTO DE BRILLO -->
+                        <div class="card-shine"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESUMEN MEJORADO -->
+            <div class="cart-summary-section">
+                <div class="summary-card sticky-summary">
+                    <div class="summary-header">
+                        <h3 class="summary-title">
+                            <i class="bi bi-receipt"></i>
+                            Resumen del Pedido
+                        </h3>
+                        <div class="summary-badge">
+                            {{ cartItems.length }} {{ cartItems.length === 1 ? 'producto' : 'productos' }}
+                        </div>
+                    </div>
+
+                    <div class="summary-content">
+                        <div class="summary-row">
+                            <span class="summary-label">Subtotal:</span>
+                            <span class="summary-value">${{ totalPrice | number:'1.2-2' }}</span>
+                        </div>
+
+                        <div class="summary-row discount">
+                            <span class="summary-label">
+                                <i class="bi bi-gift-fill"></i>
+                                Descuento:
+                            </span>
+                            <span class="summary-value">-$0.00</span>
+                        </div>
+
+                        <div class="summary-row shipping">
+                            <span class="summary-label">
+                                <i class="bi bi-truck"></i>
+                                Envío:
+                            </span>
+                            <span class="summary-value free-shipping">¡Gratis!</span>
+                        </div>
+
+                        <div class="summary-divider"></div>
+
+                        <div class="summary-total">
+                            <span class="total-label">Total a Pagar:</span>
+                            <span class="total-price">${{ totalPrice | number:'1.2-2' }}</span>
+                        </div>
+
+                        <div class="savings-badge">
+                            <i class="bi bi-piggy-bank-fill"></i>
+                            ¡Estás ahorrando $0.00!
+                        </div>
+                    </div>
+
+                    <div class="summary-actions">
+                        <button class="checkout-btn-primary">
+                            <i class="bi bi-credit-card-fill"></i>
+                            Proceder al Pago
+                            <div class="btn-sparkle"></div>
+                        </button>
+
+                        <a routerLink="/productos" class="continue-shopping-link">
+                            <i class="bi bi-arrow-left-circle-fill"></i>
+                            Seguir Comprando
+                            <span class="link-emoji">🛒</span>
+                        </a>
+                    </div>
+
+                    <div class="security-notice">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Compra 100% segura y protegida</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
