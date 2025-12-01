@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:16
+    container_name: encanto_postgres
+    environment:
+      POSTGRES_DB: encanto_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: julian
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - encanto_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d encanto_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Laravel
+  backend:
+    build:
+      context: ./backend-reposteria
+      dockerfile: Dockerfile
+    container_name: encanto_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend-reposteria:/var/www/html
+      - /var/www/html/vendor # Evita sobreescribir vendor
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=encanto_db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=julian
+      - REDIS_HOST=redis
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - encanto_network
+    working_dir: /var/www/html
+    command: >
+      sh -c "
+        composer install --no-dev --optimize-autoloader &&
+        php artisan config:clear &&
+        php artisan cache:clear &&
+        php artisan route:clear &&
+        php artisan view:clear &&
+        php artisan migrate --force &&
+        php artisan serve --host=0.0.0.0 --port=8000
+      "
+
+  # Frontend Angular
+  frontend:
+    build:
+      context: ./reposteria-project
+      dockerfile: Dockerfile
+    container_name: encanto_frontend
+    ports:
+      - "4200:80"
+    volumes:
+      - ./reposteria-project:/app
+      - /app/node_modules # Evita sobreescribir node_modules
+    depends_on:
+      - backend
+    networks:
+      - encanto_network
+    environment:
+      - NODE_ENV=production
+
+  # Redis para cache y sesiones (opcional pero recomendado)
+  redis:
+    image: redis:7-alpine
+    container_name: encanto_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - encanto_network
+    volumes:
+      - redis_data:/data
+
+networks:
+  encanto_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local

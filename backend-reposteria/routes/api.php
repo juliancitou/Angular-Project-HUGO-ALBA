@@ -8,6 +8,10 @@ use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\CategoryController;
 
 // ==================== RUTA DE PRUEBA ====================
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+});
+
 Route::get('/test', function () {
     return response()->json([
         'message' => '¡API de Repostería Encanto funcionando!',
