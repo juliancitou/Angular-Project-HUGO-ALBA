@@ -115,7 +115,7 @@ CREATE INDEX idx_cart_items_cart_id ON cart_items(cart_id);
 -- TRIGGER: Contador automático de likes
 -- =============================================
 CREATE
-OR REPLACE FUNCTION update_product_likes_count() RETURNS TRIGGER AS $ $ BEGIN IF TG_OP = 'INSERT' THEN
+OR REPLACE FUNCTION update_product_likes_count() RETURNS TRIGGER AS $$ BEGIN IF TG_OP = 'INSERT' THEN
 UPDATE
     products
 SET
@@ -137,7 +137,7 @@ RETURN NULL;
 
 END;
 
-$ $ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS trigger_update_likes_count ON product_likes;
 
@@ -146,22 +146,6 @@ AFTER
 INSERT
     OR DELETE ON product_likes FOR EACH ROW EXECUTE FUNCTION update_product_likes_count();
 
--- =============================================
--- TABLAS REQUERIDAS POR LARAVEL SANCTUM
--- =============================================
-CREATE TABLE personal_access_tokens (
-    id BIGSERIAL PRIMARY KEY,
-    tokenable_type VARCHAR(255) NOT NULL,
-    tokenable_id BIGINT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    token VARCHAR(64) UNIQUE NOT NULL,
-    abilities TEXT NULL,
-    last_used_at TIMESTAMP(0) NULL,
-    expires_at TIMESTAMP(0) NULL,
-    created_at TIMESTAMP(0) NULL,
-    updated_at TIMESTAMP(0) NULL,
-    INDEX(tokenable_type, tokenable_id)
-);
 
 CREATE TABLE password_reset_tokens (
     email VARCHAR(255) PRIMARY KEY,
