@@ -103,7 +103,7 @@
 
                     <!-- Botones Editar / Eliminar -->
                     <div class="product-actions">
-                        <button [routerLink]="['/admin/edit-product', product.id]" class="btn btn-edit">
+                        <button (click)="goToEditProduct(product.id!)" class="btn btn-edit">
                             Editar
                         </button>
                         <button (click)="deleteProduct(product.id!)" class="btn btn-delete">

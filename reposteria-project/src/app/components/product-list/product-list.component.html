@@ -1,74 +1,187 @@
-<section class="product-list-section">
+<section class="top-products-section">
+    <!-- Fondo decorativo especial -->
+    <div class="top-products-background">
+        <div class="floating-trophies">
+            <span class="trophy">🏆</span>
+            <span class="trophy">🥇</span>
+            <span class="trophy">🥈</span>
+            <span class="trophy">🥉</span>
+            <span class="trophy">⭐</span>
+            <span class="trophy">👑</span>
+        </div>
+    </div>
+
     <div class="container">
         <!-- Encabezado mejorado -->
-        <div class="section-header">
-            <h2 class="section-title">Productos Destacados</h2>
-            <br>
-            <p class="section-subtitle">Hechos con amor y los mejores ingredientes</p>
+        <div class="top-products-header">
+            <div class="header-decoration">
+                <div class="crown-icon">
+                    <i class="bi bi-trophy-fill"></i>
+                </div>
+                <div class="header-sparkle sparkle-1">✨</div>
+                <div class="header-sparkle sparkle-2">🌟</div>
+            </div>
+
+            <h2 class="top-products-title">
+                Nuestros Productos Estrella
+                <div class="title-underline"></div>
+            </h2>
+
+            <p class="top-products-subtitle">
+                Los 6 productos mejor calificados por nuestros clientes
+                <span class="subtitle-emoji">❤️</span>
+            </p>
+
+            <div class="top-products-badge">
+                <i class="bi bi-star-fill"></i>
+                <span>Top 6 Más Gustados</span>
+            </div>
         </div>
 
-        <!-- Grid de productos -->
-        <div class="products-grid">
-            @for (product of products; track product.id) {
-            <div class="product-card" [routerLink]="['/producto', product.id]" class="clickable-card">
+        <!-- Grid de productos mejorado -->
+        <div class="top-products-grid">
+            @if (topProducts.length === 0) {
+            <div class="empty-top-products">
+                <div class="empty-icon">
+                    <i class="bi bi-emoji-frown"></i>
+                </div>
+                <h3>¡Pronto tendremos productos destacados!</h3>
+                <p>Sé el primero en calificar nuestros productos</p>
+            </div>
+            }
 
-                <!-- Contenedor de imagen -->
-                <div class="product-image-container">
-                    @if (getFirstImage(product.images)) {
-                    <img [src]="getFirstImage(product.images)" [alt]="product.name" class="product-image">
-                    } @else {
-                    <div class="product-image placeholder-image">
-                        <span class="placeholder-text">Delicioso</span>
+            @for (product of topProducts; track product.id; let i = $index) {
+            <div class="top-product-card" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">
+                <!-- Badge de posición mejorado -->
+                <div class="ranking-badge" [class.top-3]="i < 3">
+                    <div class="ranking-number">{{ i + 1 }}</div>
+                    <div class="ranking-icon">
+                        @if (i === 0) { 👑 }
+                        @else if (i === 1) { 🥈 }
+                        @else if (i === 2) { 🥉 }
+                        @else { ⭐ }
                     </div>
-                    }
+                </div>
 
-                    <!-- Badge de categoría -->
-                    <div class="category-badge">
+                <!-- Contenedor de imagen premium -->
+                <div class="top-product-image-container" [routerLink]="['/producto', product.id]">
+                    <div class="image-wrapper">
+                        @if (getFirstImage(product.images)) {
+                        <img [src]="getFirstImage(product.images)" [alt]="product.name" class="top-product-image">
+                        } @else {
+                        <div class="top-product-image placeholder-image">
+                            <span class="placeholder-emoji">🎂</span>
+                        </div>
+                        }
+
+                        <!-- Overlay de gradiente -->
+                        <div class="image-gradient-overlay"></div>
+
+                        <!-- Efecto de brillo -->
+                        <div class="image-shine"></div>
+                    </div>
+
+                    <!-- Badge de likes premium -->
+                    <div class="top-likes-badge">
+                        <div class="heart-pulse"></div>
+                        <i class="bi bi-heart-fill"></i>
+                        <span class="likes-count">{{ product.likes_count || 0 }}</span>
+                        <span class="likes-label">me gusta</span>
+                    </div>
+
+                    <!-- Badge de categoría premium -->
+                    <div class="top-category-badge">
+                        <i class="bi bi-tag-fill"></i>
                         {{ getCategoryName(product) | titlecase }}
                     </div>
                 </div>
 
-                <!-- Contenido del producto -->
-                <div class="product-content">
-                    <h3 class="product-name">{{ product.name }}</h3>
-                    <p class="product-description">{{ product.description }}</p>
+                <!-- Contenido premium -->
+                <div class="top-product-content">
+                    <div class="product-header">
+                        <h3 class="top-product-name">{{ product.name }}</h3>
+                        @if (i < 3) { <div class="top-product-award">
+                            @if (i === 0) { 🏆 Oro }
+                            @else if (i === 1) { 🥈 Plata }
+                            @else { 🥉 Bronce }
+                    </div>
+                    }
+                </div>
 
-                    <!-- Footer con precio y botón -->
-                    <div class="product-footer">
-                        <div class="price-container">
-                            <span class="product-price">${{ product.price }}</span>
-                            <span class="price-currency">MXN</span>
+                <div class="top-product-description">
+                    {{ product.description }}
+                </div>
+
+                <!-- Información de precio mejorada -->
+                <div class="top-price-section">
+                    <div class="price-info">
+                        <div class="top-price-container">
+                            <span class="top-price-currency">$</span>
+                            <span class="top-price-amount">{{ product.price }}</span>
+                            <span class="top-price-label">MXN</span>
                         </div>
-
-                        <!-- QUITA el (click) del botón y deja solo esto -->
-                        <button class="add-to-cart-btn">
-                            Ver detalle
-                        </button>
-
+                        <div class="price-subtitle">Precio especial</div>
                     </div>
 
-                    <!-- Alertas de stock -->
-                    @if (product.stock < 5 && product.stock> 0) {
-                        <div class="stock-warning">
-                            Solo quedan {{ product.stock }}!
-                        </div>
+                    <!-- Rating visual -->
+                    <div class="product-rating">
+                        @for (star of [1,2,3,4,5]; track star) {
+                        <i class="bi" [class.bi-star-fill]="star <= getProductRating(i)"
+                            [class.bi-star]="star > getProductRating(i)"></i>
                         }
-                        @if (product.stock === 0) {
-                        <div class="stock-out">
-                            Agotado
-                        </div>
-                        }
+                    </div>
                 </div>
-            </div>
-            }
-        </div>
 
-        <!-- Estado vacío -->
-        @if (products.length === 0) {
-        <div class="empty-state">
-            <i class="bi bi-inbox"></i>
-            <p>No hay productos disponibles en este momento</p>
+                <!-- Acciones mejoradas -->
+                <div class="top-product-actions">
+                    <button class="top-add-to-cart-btn" (click)="addToCart(product, $event)"
+                        [disabled]="product.stock === 0" [class.best-seller]="i === 0">
+                        <i class="bi bi-cart-plus-fill"></i>
+                        <span>{{ product.stock === 0 ? 'Agotado' : 'Agregar al Carrito' }}</span>
+                        <div class="btn-sparkle"></div>
+                    </button>
+
+                    <a [routerLink]="['/producto', product.id]" class="top-view-detail-btn">
+                        <i class="bi bi-eye-fill"></i>
+                        Ver Detalle
+                    </a>
+                </div>
+
+                <!-- Estado de stock premium -->
+                @if (product.stock < 5 && product.stock> 0) {
+                    <div class="top-stock-warning">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        ¡Últimas {{ product.stock }} unidades!
+                        <div class="warning-pulse"></div>
+                    </div>
+                    }
+                    @if (product.stock === 0) {
+                    <div class="top-stock-out">
+                        <i class="bi bi-x-circle-fill"></i>
+                        Temporalmente agotado
+                    </div>
+                    }
+            </div>
+
+            <!-- Efecto especial para top 3 -->
+            @if (i < 3) { <div class="product-glow">
+        </div>
+        <div class="product-sparkles">
+            <span class="sparkle">✨</span>
+            <span class="sparkle">🌟</span>
+            <span class="sparkle">💫</span>
         </div>
         }
+    </div>
+    }
+    </div>
+
+    <!-- Footer decorativo -->
+    <div class="top-products-footer">
+        <div class="customer-review">
+            <i class="bi bi-chat-quote-fill"></i>
+            <p>"Nuestros clientes no se equivocan, estos productos son simplemente increíbles"</p>
+        </div>
+    </div>
     </div>
 </section>

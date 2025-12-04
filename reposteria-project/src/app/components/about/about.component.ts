@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
     selector: 'app-about',
     standalone: true,
-    imports: [CommonModule, HeaderComponent],  // ← Ya no necesitas HeaderComponent aquí
+    imports: [CommonModule, HeaderComponent, FooterComponent],  // ← Ya no necesitas HeaderComponent aquí
     templateUrl: './about.component.html',
     styleUrls: ['./about.component.css']
 })
+
 export class AboutComponent {
     socialLinks = [
         { name: 'WhatsApp', image: 'assets/whatsapp-logo.png', url: 'https://wa.me/524811140821' },

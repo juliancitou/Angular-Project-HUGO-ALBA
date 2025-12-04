@@ -30,14 +30,6 @@ export const routes: Routes = [
             .then(m => m.AllProductsComponent),
         title: 'Todos los Productos - Encanto Repostería'
     },
-
-    // AÑADE ESTAS DOS RUTAS (¡AHORA SÍ!)
-    {
-        path: 'productos',
-        loadComponent: () => import('./components/product-list/product-list.component')
-            .then(m => m.ProductListComponent),
-        title: 'Nuestros Productos - Encanto Repostería'
-    },
     {
         path: 'acerca',
         loadComponent: () => import('./components/about/about.component')
@@ -62,9 +54,9 @@ export const routes: Routes = [
                 title: 'Crear Producto - Encanto Admin'
             },
             {
-                path: 'edit-product/:id',
+                path: 'admin/edit-product/:id',
                 loadComponent: () => import('./admin/edit-product/edit-product')
-                    .then(m => m.EditProduct),
+                    .then(m => m.EditProductComponent),
                 title: 'Editar Producto - Encanto Admin'
             }
             // YA NO VA AQUÍ LA RUTA producto/:id
